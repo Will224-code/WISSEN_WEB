@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bocetos de base de datos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* VOICE: herramienta de trabajo, precisa y tranquila, como mesa de dibujo técnico
+   IDEA: papel cuadriculado de un plano de arquitecto donde se fijan fichas de tablas
+   PICTURE: el propio lienzo con tablas y líneas de relación (pata de gallo)
+   COLOUR and TYPE: blanco, negro, planos concreto #d8d8d4, amarillo de seguridad en lo seleccionado; Hanken Grotesk
+   LAYOUT: barra superior, lienzo grande a la izquierda, panel de edición a la derecha; en móvil se apilan */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#1a1a19);--ink:light-dark(#1a1a19,#f0f0ec);--paper:light-dark(#f3f3f0,#222220);
+--dot:light-dark(#c6c6c0,#3c3c39);--card:light-dark(#ffffff,#262624);--sh:light-dark(#d8d8d4,#0c0c0b);
+--line:light-dark(#e6e6e2,#363633);--muted:light-dark(#66665f,#a6a69f);--y:#ffe600}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Hanken Grotesk",system-ui,sans-serif;overflow-x:clip;display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:12px max(2vw,14px);border-bottom:1.5px solid var(--ink)}
+h1{font-size:clamp(20px,2.4vw,26px);line-height:1.05;margin:0;font-weight:600;letter-spacing:-.01em;margin-inline-end:auto}
+.bar{display:flex;flex-wrap:wrap;gap:8px}
+button,select,input{font:inherit;color:inherit}
+button{min-height:40px;padding:0 14px;border:1.5px solid var(--ink);background:var(--card);font-weight:600;font-size:14px;cursor:pointer;border-radius:3px}
+button:hover{background:var(--paper)}
+button.pri{background:var(--ink);color:var(--bg)}
+button.pri:hover{opacity:.88}
+button.danger{border-color:#b3261e;color:#b3261e}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;box-shadow:0 0 0 5px var(--y)}
+main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 370px;min-height:0}
+.stage{position:relative;min-height:0}
+#wrap{position:absolute;inset:0;overflow:auto}
+#board{position:relative;background-color:var(--paper);background-image:radial-gradient(var(--dot) 1px,transparent 1.2px);background-size:20px 20px}
+#lines{position:absolute;inset:0;pointer-events:none}
+#lines path,#lines line{stroke:var(--ink);stroke-width:1.6;fill:none}
+.tb{position:absolute;width:220px;background:var(--card);outline:1.5px solid var(--ink);box-shadow:5px 5px 0 var(--sh);padding-bottom:6px;user-select:none}
+.th{height:34px;line-height:34px;padding:0 10px;background:var(--ink);color:var(--bg);font-weight:600;font-size:15px;cursor:grab;touch-action:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.th:active{cursor:grabbing}
+.tb.on .th{background:var(--y);color:#1a1a19}
+.cr{position:relative;height:26px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:6px;align-items:center;padding:0 14px 0 6px;font-size:13px;border-top:1px solid var(--line)}
+.cr:first-of-type{border-top:0}
+.cr.empty{display:block;line-height:26px;color:var(--muted);padding-left:10px}
+.k{font-size:10px;font-weight:700;color:var(--muted);text-align:center;border-radius:2px;line-height:15px}
+.k.pk{background:var(--y);color:#1a1a19}
+.cn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct{color:var(--muted);font-size:12px;max-width:92px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{position:absolute;right:-8px;top:6px;width:14px;height:14px;min-height:0;padding:0;border-radius:50%;border:1.5px solid var(--ink);background:var(--card);opacity:0;transition:opacity .15s}
+.dot::after{content:"";position:absolute;inset:-9px}
+.tb:hover .dot,body.linking .dot{opacity:1}
+.dot.on{background:var(--y);opacity:1}
+@media(hover:none){.dot{opacity:1}}
+#empty{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center;color:var(--muted);padding:20px}
+#empty[hidden],#hint[hidden]{display:none}
+#empty b{display:block;color:var(--ink);font-size:22px;margin-bottom:4px}
+#hint{position:absolute;left:12px;bottom:12px;right:12px;width:fit-content;max-width:calc(100% - 24px);background:var(--bg);border:1.5px solid var(--ink);padding:6px 12px;font-size:13px;pointer-events:none}
+body.linking #hint{background:var(--y);color:#1a1a19;border-color:#1a1a19}
+aside{border-left:1.5px solid var(--ink);overflow:auto;padding:18px;background:var(--bg)}
+h2{font-size:17px;margin:0 0 10px;font-weight:700}
+section+section{margin-top:26px;padding-top:18px;border-top:1.5px solid var(--line)}
+.f{display:block;font-size:13px;font-weight:600;margin-bottom:12px}
+input[type=text],input:not([type]),select,textarea{width:100%;font-size:16px;padding:7px 8px;border:1.5px solid var(--ink);background:var(--card);border-radius:3px}
+.f input{margin-top:4px}
+.colhead,.colrow{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 26px 26px 34px;gap:5px;align-items:center}
+.colhead{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.colhead span:nth-child(3),.colhead span:nth-child(4){text-align:center}
+.colrow{margin-bottom:5px}
+.colrow input:not([type=checkbox]){padding:6px;font-size:15px}
+input[type=checkbox]{width:20px;height:20px;margin:auto;accent-color:var(--ink)}
+.x{min-height:34px;padding:0;font-size:18px;line-height:1}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hint{color:var(--muted);font-size:14px;margin:0}
+.relform{display:grid;grid-template-columns:minmax(0,1fr) 76px;gap:6px}
+.relform select:first-child,.relform select:nth-child(3){grid-column:1/-1}
+.relform .lb{font-size:12px;font-weight:700;color:var(--muted);grid-column:1/-1;margin-top:2px}
+#rellist{list-style:none;margin:14px 0 0;padding:0}
+#rellist li{display:grid;grid-template-columns:minmax(0,1fr) 70px minmax(0,1fr) 34px;gap:5px;align-items:center;font-size:13px;margin-bottom:6px}
+#rellist li span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rellist li select{padding:5px;font-size:14px}
+#rellist li.hint{display:block}
+.ov{position:fixed;inset:0;background:rgba(10,10,10,.5);display:grid;place-items:center;padding:14px;z-index:10}
+.ov[hidden]{display:none}
+.md{background:var(--bg);outline:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--sh);width:min(780px,100%);max-height:90vh;overflow:auto;padding:20px}
+.md h2{font-size:22px}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+textarea{height:44vh;font:13px/1.5 "JetBrains Mono",ui-monospace,monospace;resize:vertical}
+.md img{display:block;max-width:100%;height:auto;border:1.5px solid var(--line);margin:6px 0 10px}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;font-size:14px;z-index:20;display:flex;gap:12px;align-items:center}
+#toast[hidden]{display:none}
+#toast button{min-height:30px;background:transparent;color:inherit;border-color:currentColor}
+@media(max-width:820px){
+ body{height:auto;display:block}
+ main{grid-template-columns:1fr}
+ .stage{height:62vh}
+ aside{border-left:0;border-top:1.5px solid var(--ink)}
+ .bar button{padding:0 10px}
+}
+@media(prefers-reduced-motion:reduce){.dot{transition:none}}
+</style>
+</head>
+<body>
+<header>
+ <h1>Bocetos de base de datos</h1>
+ <div class="bar">
+  <button class="pri" id="bNew">+ Nueva tabla</button>
+  <button id="bUndo" title="Ctrl+Z">Deshacer</button>
+  <button id="bTxt">Exportar texto</button>
+  <button id="bImg">Exportar imagen</button>
+  <button id="bImp">Importar texto</button>
+  <button id="bSample">Ejemplo</button>
+  <button id="bClear">Limpiar</button>
+ </div>
+</header>
+<main>
+ <div class="stage">
+  <div id="wrap"><div id="board"><svg id="lines"></svg><div id="tables"></div></div></div>
+  <div id="empty"><div><b>Lienzo vacío</b>Crea una tabla con “Nueva tabla” o carga el ejemplo.</div></div>
+  <div id="hint"></div>
+ </div>
+ <aside>
+  <section><h2>Tabla</h2><div id="edit"></div></section>
+  <section>
+   <h2>Relaciones</h2>
+   <div class="relform">
+    <span class="lb">Desde</span>
+    <select id="rf" aria-label="Columna de origen"></select>
+    <span class="lb">Hacia</span>
+    <select id="rt" aria-label="Columna de destino"></select>
+    <select id="rcard" aria-label="Cardinalidad"><option>1:N</option><option>1:1</option><option>N:1</option><option>N:M</option></select>
+    <button id="addrel">Agregar</button>
+   </div>
+   <ul id="rellist"></ul>
+  </section>
+ </aside>
+</main>
+<datalist id="types"><option>INT</option><option>BIGINT</option><option>VARCHAR(100)</option><option>CHAR(10)</option><option>TEXT</option><option>DATE</option><option>DATETIME</option><option>BOOLEAN</option><option>DECIMAL(10,2)</option><option>FLOAT</option></datalist>
+<div class="ov" id="ov" hidden><div class="md" role="dialog" aria-modal="true" id="md"></div></div>
+<div id="toast" hidden></div>
+<script>
+{
+const W=220,HH=34,RH=26,KEY='bocetos-bd-v1',CARDS=['1:1','1:N','N:1','N:M'];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let uid=Date.now();const nid=()=>(uid++).toString(36);
+const mkT=(name,x,y,defs)=>({id:nid(),name,x,y,cols:defs.map(d=>{const[n,t,...f]=d.split(' ');return{id:nid(),name:n,type:t,pk:f.includes('pk'),nn:f.includes('nn')}})});
+function sample(){
+ const a=mkT('alumno',60,60,['id INT pk','matricula CHAR(10) nn','nombre VARCHAR(80) nn','correo VARCHAR(120)']);
+ const c=mkT('curso',680,60,['id INT pk','nombre VARCHAR(80) nn','creditos INT']);
+ const i=mkT('inscripcion',370,250,['id INT pk','alumno_id INT nn','curso_id INT nn','fecha DATE']);
+ const col=(t,n)=>t.cols.find(x=>x.name===n).id;
+ return{tables:[a,c,i],rels:[
+  {id:nid(),from:{t:a.id,c:col(a,'id')},to:{t:i.id,c:col(i,'alumno_id')},card:'1:N'},
+  {id:nid(),from:{t:c.id,c:col(c,'id')},to:{t:i.id,c:col(i,'curso_id')},card:'1:N'}]};
+}
+let S=null,sel=null,pending=null,hist=[],drag=null;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!Array.isArray(S.tables))S=sample();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const snap=()=>{hist.push(JSON.stringify(S));if(hist.length>100)hist.shift()};
+const tbl=id=>S.tables.find(t=>t.id===id);
+const colOf=(t,cid)=>t&&t.cols.find(c=>c.id===cid);
+const tH=t=>HH+Math.max(t.cols.length,t.cols.length?0:1)*RH+6;
+const colY=(t,cid)=>t.y+HH+t.cols.findIndex(c=>c.id===cid)*RH+RH/2;
+const safe=n=>String(n||'sin_nombre').trim().replace(/\s+/g,'_');
+function undo(){if(!hist.length){toast('No hay nada que deshacer');return}S=JSON.parse(hist.pop());if(!tbl(sel))sel=null;pending=null;renderAll()}
+function clean(){S.rels=S.rels.filter(r=>colOf(tbl(r.from.t),r.from.c)&&colOf(tbl(r.to.t),r.to.c))}
+function addRel(from,to,card){
+ const r={id:nid(),from,to,card};S.rels.push(r);
+ const fs=fkSide(r);if(!fs)return;
+ const os=fs===r.from?r.to:r.from,fc=colOf(tbl(fs.t),fs.c),oc=colOf(tbl(os.t),os.c);
+ if(fc&&oc&&!fc.pk&&oc.type)fc.type=oc.type;
+}
+function fkSide(r){return r.card==='N:1'?r.from:r.card==='N:M'?null:r.to}
+function geom(r){
+ const a=tbl(r.from.t),b=tbl(r.to.t);
+ const y1=colY(a,r.from.c),y2=colY(b,r.to.c);let x1,x2,d1,d2;
+ if(b.x>a.x+W+30){x1=a.x+W;d1=1;x2=b.x;d2=-1}
+ else if(a.x>b.x+W+30){x1=a.x;d1=-1;x2=b.x+W;d2=1}
+ else{x1=a.x+W;d1=1;x2=b.x+W;d2=1}
+ const k=Math.max(50,Math.abs(x2-x1)/2);
+ return{x1,y1,x2,y2,d1,d2,k};
+}
+function marks(x,y,d,many){
+ if(many){const p=x+d*15;return[[p,y,x,y-7],[p,y,x,y],[p,y,x,y+7],[x+d*19,y-7,x+d*19,y+7]]}
+ const p=x+d*10;return[[p,y-7,p,y+7],[x+d*15,y-7,x+d*15,y+7]];
+}
+function relShapes(r){
+ const g=geom(r),[c1,c2]=r.card.split(':');
+ return{path:[g.x1,g.y1,g.x1+g.d1*g.k,g.y1,g.x2+g.d2*g.k,g.y2,g.x2,g.y2],segs:[...marks(g.x1,g.y1,g.d1,c1!=='1'),...marks(g.x2,g.y2,g.d2,c2!=='1')]};
+}
+function drawLines(){
+ $('#lines').innerHTML=S.rels.map(r=>{const s=relShapes(r),p=s.path;
+  return`<path d="M${p[0]} ${p[1]}C${p[2]} ${p[3]},${p[4]} ${p[5]},${p[6]} ${p[7]}"/>`+s.segs.map(q=>`<line x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`).join('')}).join('');
+}
+function sizeBoard(){
+ const w=$('#wrap');let mx=0,my=0;
+ S.tables.forEach(t=>{mx=Math.max(mx,t.x+W);my=Math.max(my,t.y+tH(t))});
+ const bw=Math.max(w.clientWidth,mx+400),bh=Math.max(w.clientHeight,my+300);
+ const b=$('#board');b.style.width=bw+'px';b.style.height=bh+'px';
+ const s=$('#lines');s.setAttribute('width',bw);s.setAttribute('height',bh);
+}
+function renderBoard(){
+ const fk=new Set(S.rels.map(fkSide).filter(Boolean).map(s=>s.t+'.'+s.c));
+ $('#tables').innerHTML=S.tables.map(t=>`<div class="tb${t.id===sel?' on':''}" data-t="${t.id}" style="left:${t.x}px;top:${t.y}px">
+<div class="th">${esc(t.name||'sin_nombre')}</div>${t.cols.map(c=>{const k=c.pk?'PK':fk.has(t.id+'.'+c.id)?'FK':'';
+return`<div class="cr"><span class="k${c.pk?' pk':''}">${k}</span><span class="cn">${esc(c.name)}</span><span class="ct">${esc(c.type)}${c.nn&&!c.pk?' *':''}</span><button class="dot${pending&&pending.c===c.id?' on':''}" data-t="${t.id}" data-c="${c.id}" aria-label="Relacionar ${esc(c.name)}"></button></div>`}).join('')}${t.cols.length?'':'<div class="cr empty">Sin columnas</div>'}</div>`).join('');
+ drawLines();sizeBoard();
+ $('#empty').hidden=S.tables.length>0;
+ document.body.classList.toggle('linking',!!pending);
+ $('#hint').textContent=pending?'Ahora toca el punto de la columna destino (Esc para cancelar)':'Arrastra las tablas por su título · usa los puntos junto a cada columna para relacionarlas';
+}
+function renderPanel(){
+ const t=tbl(sel);
+ $('#edit').innerHTML=t?`<label class="f">Nombre<input id="tname" value="${esc(t.name)}" spellcheck="false" autocomplete="off"></label>
+<div class="colhead"><span>Columna</span><span>Tipo</span><span title="Llave primaria">PK</span><span title="No nulo">NN</span><span></span></div>
+${t.cols.map(c=>`<div class="colrow" data-c="${c.id}"><input data-f="name" value="${esc(c.name)}" aria-label="Nombre de columna" spellcheck="false" autocomplete="off"><input data-f="type" list="types" value="${esc(c.type)}" aria-label="Tipo de dato" spellcheck="false" autocomplete="off"><input type="checkbox" data-f="pk" ${c.pk?'checked':''} aria-label="Llave primaria"><input type="checkbox" data-f="nn" ${c.nn?'checked':''} aria-label="No nulo"><button class="x" data-del="${c.id}" aria-label="Quitar columna">×</button></div>`).join('')}
+<div class="row"><button id="addcol">+ Columna</button><button id="deltable" class="danger">Eliminar tabla</button></div>`
+ :'<p class="hint">Toca una tabla para editar su nombre y columnas.</p>';
+ renderRels();
+}
+function renderRels(){
+ const opts=S.tables.flatMap(t=>t.cols.map(c=>`<option value="${t.id}|${c.id}">${esc(t.name)}.${esc(c.name)}</option>`)).join('');
+ for(const id of['#rf','#rt']){const e=$(id),v=e.value;e.innerHTML=opts;if([...e.options].some(o=>o.value===v))e.value=v;else if(id==='#rt'){const o=[...e.options].find(o=>o.value.split('|')[0]!==$('#rf').value.split('|')[0]);if(o)e.value=o.value}}
+ $('#rellist').innerHTML=S.rels.map(r=>{const a=tbl(r.from.t),b=tbl(r.to.t);
+  return`<li data-r="${r.id}"><span title="${esc(a.name)}.${esc(colOf(a,r.from.c).name)}">${esc(a.name)}.${esc(colOf(a,r.from.c).name)}</span><select aria-label="Cardinalidad">${CARDS.map(k=>`<option${k===r.card?' selected':''}>${k}</option>`).join('')}</select><span title="${esc(b.name)}.${esc(colOf(b,r.to.c).name)}">${esc(b.name)}.${esc(colOf(b,r.to.c).name)}</span><button class="x" aria-label="Quitar relación">×</button></li>`}).join('')
+  ||'<li class="hint">Sin relaciones todavía.</li>';
+}
+function renderAll(){clean();renderBoard();renderPanel();save()}
+let tt;function toast(msg,undoBtn){const t=$('#toast');t.innerHTML=esc(msg)+(undoBtn?'<button id="tUndo">Deshacer</button>':'');t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,4000)}
+$('#toast').addEventListener('click',e=>{if(e.target.id==='tUndo'){undo();$('#toast').hidden=true}});
+
+/* lienzo */
+const tablesEl=$('#tables');
+tablesEl.addEventListener('pointerdown',e=>{
+ const tb=e.target.closest('.tb');if(!tb||e.target.closest('.dot'))return;
+ const id=tb.dataset.t;
+ if(sel!==id){sel=id;renderPanel();document.querySelectorAll('.tb').forEach(x=>x.classList.toggle('on',x.dataset.t===id))}
+ if(!e.target.closest('.th'))return;
+ const t=tbl(id);snap();drag={t,el:tb,ox:e.clientX-t.x,oy:e.clientY-t.y,moved:false};
+ tb.setPointerCapture(e.pointerId);e.preventDefault();
+});
+tablesEl.addEventListener('pointermove',e=>{if(!drag)return;
+ drag.t.x=Math.max(0,Math.round(e.clientX-drag.ox));drag.t.y=Math.max(0,Math.round(e.clientY-drag.oy));drag.moved=true;
+ drag.el.style.left=drag.t.x+'px';drag.el.style.top=drag.t.y+'px';drawLines();});
+const endDrag=()=>{if(!drag)return;if(!drag.moved)hist.pop();drag=null;renderBoard();save()};
+tablesEl.addEventListener('pointerup',endDrag);tablesEl.addEventListener('pointercancel',endDrag);
+tablesEl.addEventListener('click',e=>{const d=e.target.closest('.dot');if(!d)return;
+ const p={t:d.dataset.t,c:d.dataset.c};
+ if(!pending)pending=p;
+ else if(pending.c===p.c)pending=null;
+ else{snap();addRel(pending,p,'1:N');pending=null;renderAll();toast('Relación 1:N creada; cámbiala en el panel si hace falta');return}
+ renderBoard();
+});
+$('#board').addEventListener('click',e=>{if(e.target.closest('.tb'))return;sel=null;pending=null;renderBoard();renderPanel()});
+
+/* panel de tabla */
+const ed=$('#edit');
+ed.addEventListener('focusin',e=>{if(e.target.matches('input:not([type=checkbox])'))snap()});
+ed.addEventListener('input',e=>{const t=tbl(sel),el=e.target;if(!t||el.type==='checkbox')return;
+ if(el.id==='tname')t.name=el.value;else colOf(t,el.closest('.colrow').dataset.c)[el.dataset.f]=el.value;
+ renderBoard();renderRels();save()});
+ed.addEventListener('change',e=>{const t=tbl(sel),el=e.target;if(!t||el.type!=='checkbox')return;
+ snap();colOf(t,el.closest('.colrow').dataset.c)[el.dataset.f]=el.checked;renderBoard();save()});
+ed.addEventListener('click',e=>{const t=tbl(sel);if(!t)return;
+ if(e.target.id==='addcol'){snap();t.cols.push({id:nid(),name:'columna_'+(t.cols.length+1),type:'VARCHAR(100)',pk:false,nn:false});renderAll();
+  const ins=ed.querySelectorAll('.colrow input[data-f=name]');const last=ins[ins.length-1];last.focus();last.select()}
+ else if(e.target.dataset.del){snap();t.cols=t.cols.filter(c=>c.id!==e.target.dataset.del);renderAll()}
+ else if(e.target.id==='deltable')delTable(t.id);
+});
+function delTable(id){const t=tbl(id);snap();S.tables=S.tables.filter(x=>x.id!==id);if(sel===id)sel=null;renderAll();toast(`Tabla “${t.name}” eliminada`,true)}
+
+/* relaciones */
+$('#addrel').addEventListener('click',()=>{const f=$('#rf').value,t=$('#rt').value;
+ if(!f||!t){toast('Primero crea tablas con columnas');return}
+ const[ft,fc]=f.split('|'),[tt2,tc]=t.split('|');
+ if(fc===tc){toast('Elige dos columnas distintas');return}
+ snap();addRel({t:ft,c:fc},{t:tt2,c:tc},$('#rcard').value);renderAll()});
+$('#rellist').addEventListener('change',e=>{const li=e.target.closest('li');const r=S.rels.find(x=>x.id===li.dataset.r);snap();r.card=e.target.value;renderBoard();save()});
+$('#rellist').addEventListener('click',e=>{if(!e.target.matches('button'))return;const id=e.target.closest('li').dataset.r;snap();S.rels=S.rels.filter(r=>r.id!==id);renderAll()});
+
+/* barra */
+function freeSpot(x0,y0,vw){
+ const hit=(x,y)=>S.tables.some(t=>x<t.x+W+40&&x+W+40>t.x&&y<t.y+tH(t)+40&&y+140>t.y);
+ const maxX=Math.max(x0,x0+vw-W-80);
+ for(let y=y0;y<y0+3000;y+=40)for(let x=x0;x<=maxX;x+=40)if(!hit(x,y))return{x:Math.round(x),y:Math.round(y)};
+ return{x:x0,y:y0};
+}
+$('#bNew').addEventListener('click',()=>{snap();const w=$('#wrap'),n=S.tables.length;
+ const p=freeSpot(w.scrollLeft+40,w.scrollTop+40,w.clientWidth);
+ const t={id:nid(),name:'tabla_'+(n+1),x:p.x,y:p.y,cols:[{id:nid(),name:'id',type:'INT',pk:true,nn:true}]};
+ S.tables.push(t);sel=t.id;renderAll();const i=$('#tname');i.focus();i.select()});
+$('#bUndo').addEventListener('click',undo);
+$('#bSample').addEventListener('click',()=>{snap();S=sample();sel=null;renderAll();toast('Ejemplo cargado',true)});
+$('#bClear').addEventListener('click',()=>{if(!S.tables.length)return;snap();S={tables:[],rels:[]};sel=null;renderAll();toast('Diagrama borrado',true)});
+
+/* exportar texto */
+function toDBML(){
+ const ops={'1:N':'<','N:1':'>','1:1':'-','N:M':'<>'};
+ const tb=S.tables.map(t=>`Table ${safe(t.name)} { // @pos ${t.x},${t.y}\n`+t.cols.map(c=>{const f=[c.pk&&'pk',c.nn&&!c.pk&&'not null'].filter(Boolean);return`  ${safe(c.name)} ${safe(c.type)||'TEXT'}${f.length?` [${f.join(', ')}]`:''}`}).join('\n')+'\n}').join('\n\n');
+ const rs=S.rels.map(r=>{const a=tbl(r.from.t),b=tbl(r.to.t);return`Ref: ${safe(a.name)}.${safe(colOf(a,r.from.c).name)} ${ops[r.card]} ${safe(b.name)}.${safe(colOf(b,r.to.c).name)}`}).join('\n');
+ return'// Boceto de base de datos (formato DBML)\n\n'+tb+(rs?'\n\n'+rs:'')+'\n';
+}
+function toSQL(){
+ const out=S.tables.map(t=>{const pk=t.cols.filter(c=>c.pk).map(c=>safe(c.name));
+  const lines=t.cols.map(c=>`  ${safe(c.name)} ${safe(c.type)||'TEXT'}${c.pk||c.nn?' NOT NULL':''}`);
+  if(pk.length)lines.push(`  PRIMARY KEY (${pk.join(', ')})`);
+  return`CREATE TABLE ${safe(t.name)} (\n${lines.join(',\n')}\n);`});
+ S.rels.forEach(r=>{const a=tbl(r.from.t),b=tbl(r.to.t),ca=colOf(a,r.from.c),cb=colOf(b,r.to.c);
+  if(r.card==='N:M'){out.push(`-- ${safe(a.name)} y ${safe(b.name)} son N:M: necesitan una tabla intermedia`);return}
+  const[ht,hc,rt,rc]=r.card==='N:1'?[a,ca,b,cb]:[b,cb,a,ca];
+  out.push(`ALTER TABLE ${safe(ht.name)} ADD FOREIGN KEY (${safe(hc.name)}) REFERENCES ${safe(rt.name)} (${safe(rc.name)});`)});
+ return out.join('\n\n')+'\n';
+}
+const ov=$('#ov'),md=$('#md');
+function openModal(html){md.innerHTML=html;ov.hidden=false;const f=md.querySelector('textarea,button');f&&f.focus()}
+function closeModal(){ov.hidden=true;md.innerHTML=''}
+ov.addEventListener('click',e=>{if(e.target===ov||e.target.dataset.close!==undefined)closeModal()});
+async function copyText(s){try{await navigator.clipboard.writeText(s);toast('Copiado al portapapeles')}catch(e){const ta=md.querySelector('textarea');ta&&ta.select();toast('Selecciona el texto y cópialo con Ctrl+C')}}
+function showText(kind){
+ const txt=kind==='sql'?toSQL():toDBML();
+ openModal(`<h2>Exportar texto</h2><div class="tabs"><button data-k="dbml" aria-pressed="${kind!=='sql'}">DBML</button><button data-k="sql" aria-pressed="${kind==='sql'}">SQL</button></div>
+<textarea readonly spellcheck="false" aria-label="Texto exportado">${esc(txt)}</textarea>
+<p class="hint">${kind==='sql'?'SQL genérico (CREATE TABLE + llaves foráneas). Revisa los tipos según tu gestor.':'DBML guarda también la posición de cada tabla; puedes volver a cargarlo con “Importar texto” o pegarlo en dbdiagram.io.'}</p>
+<div class="row"><button class="pri" id="mCopy">Copiar</button><button data-close>Cerrar</button></div>`);
+ md.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>showText(b.dataset.k));
+ $('#mCopy').onclick=()=>copyText(txt);
+}
+$('#bTxt').addEventListener('click',()=>showText('dbml'));
+
+/* exportar imagen */
+function fit(ctx,s,max){s=String(s);if(ctx.measureText(s).width<=max)return s;while(s.length&&ctx.measureText(s+'…').width>max)s=s.slice(0,-1);return s+'…'}
+async function toPNG(){
+ try{await document.fonts.ready}catch(e){}
+ const pad=70,sc=2;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ S.tables.forEach(t=>{x0=Math.min(x0,t.x);y0=Math.min(y0,t.y);x1=Math.max(x1,t.x+W);y1=Math.max(y1,t.y+tH(t))});
+ const w=x1-x0+pad*2,h=y1-y0+pad*2,cv=document.createElement('canvas');
+ cv.width=w*sc;cv.height=h*sc;const c=cv.getContext('2d');c.scale(sc,sc);
+ c.fillStyle='#fff';c.fillRect(0,0,w,h);c.translate(pad-x0,pad-y0);
+ const F='"Hanken Grotesk",system-ui,sans-serif',ink='#1a1a19';
+ c.strokeStyle=ink;c.lineWidth=1.6;
+ const fk=new Set(S.rels.map(fkSide).filter(Boolean).map(s=>s.t+'.'+s.c));
+ S.rels.forEach(r=>{const s=relShapes(r),p=s.path;c.beginPath();c.moveTo(p[0],p[1]);c.bezierCurveTo(p[2],p[3],p[4],p[5],p[6],p[7]);
+  s.segs.forEach(q=>{c.moveTo(q[0],q[1]);c.lineTo(q[2],q[3])});c.stroke()});
+ S.tables.forEach(t=>{const th=tH(t);
+  c.fillStyle='#d8d8d4';c.fillRect(t.x+5,t.y+5,W,th);c.fillStyle='#fff';c.fillRect(t.x,t.y,W,th);
+  c.fillStyle=ink;c.fillRect(t.x,t.y,W,HH);c.fillStyle='#fff';c.textBaseline='middle';c.font=`600 15px ${F}`;
+  c.fillText(fit(c,t.name||'sin_nombre',W-20),t.x+10,t.y+HH/2);
+  t.cols.forEach((col,i)=>{const yy=t.y+HH+i*RH,cy=yy+RH/2;
+   if(i){c.strokeStyle='#e6e6e2';c.lineWidth=1;c.beginPath();c.moveTo(t.x,yy+.5);c.lineTo(t.x+W,yy+.5);c.stroke()}
+   const k=col.pk?'PK':fk.has(t.id+'.'+col.id)?'FK':'';
+   if(col.pk){c.fillStyle='#ffe600';c.fillRect(t.x+6,cy-7.5,26,15)}
+   c.font=`700 10px ${F}`;c.fillStyle=col.pk?ink:'#66665f';c.textAlign='center';if(k)c.fillText(k,t.x+19,cy);
+   c.font=`12px ${F}`;c.textAlign='right';c.fillStyle='#66665f';const ty=fit(c,(col.type||'')+(col.nn&&!col.pk?' *':''),92);c.fillText(ty,t.x+W-12,cy);
+   const tw=c.measureText(ty).width;c.textAlign='left';c.font=`13px ${F}`;c.fillStyle=ink;c.fillText(fit(c,col.name,W-38-12-tw-8),t.x+38,cy)});
+  c.strokeStyle=ink;c.lineWidth=1.5;c.strokeRect(t.x,t.y,W,th);c.textAlign='left'});
+ return cv;
+}
+$('#bImg').addEventListener('click',async()=>{
+ if(!S.tables.length){toast('No hay tablas para exportar');return}
+ const cv=await toPNG(),url=cv.toDataURL('image/png');
+ openModal(`<h2>Exportar imagen</h2><img src="${url}" alt="Diagrama de base de datos exportado">
+<p class="hint">Clic derecho sobre la imagen → “Guardar imagen como…” (en celular, mantenla presionada). También puedes copiarla y pegarla directo en Word, Docs o un chat.</p>
+<div class="row"><button class="pri" id="mCopyImg">Copiar imagen</button><button data-close>Cerrar</button></div>`);
+ $('#mCopyImg').onclick=()=>cv.toBlob(async b=>{try{await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);toast('Imagen copiada')}catch(e){toast('Tu navegador no dejó copiarla: usa clic derecho → Guardar imagen')}},'image/png');
+});
+
+/* importar texto */
+function parse(txt){
+ const tables=[],refs=[],ops={'<':'1:N','>':'N:1','-':'1:1','<>':'N:M'};let cur=null,m;
+ for(const raw of txt.split(/\r?\n/)){
+  const pos=raw.match(/@pos\s+(-?\d+)\s*,\s*(-?\d+)/),l=raw.replace(/\/\/.*$/,'').trim();if(!l)continue;
+  if(m=l.match(/^Table\s+"?([\w.]+)"?/i)){cur={id:nid(),name:m[1].split('.').pop(),x:pos?+pos[1]:null,y:pos?+pos[2]:null,cols:[]};tables.push(cur);continue}
+  if(l.startsWith('}')){cur=null;continue}
+  if(m=l.match(/^Ref\s*\w*\s*:\s*"?(\w+)"?\."?(\w+)"?\s*(<>|<|>|-)\s*"?(\w+)"?\."?(\w+)"?/i)){refs.push([m[1],m[2],m[3],m[4],m[5]]);continue}
+  if(cur&&(m=l.match(/^"?(\w+)"?\s+([^\s\[]+)\s*(?:\[(.*)\])?/))){const f=(m[3]||'').toLowerCase();
+   cur.cols.push({id:nid(),name:m[1],type:m[2],pk:/\bpk\b|primary key/.test(f),nn:/not null/.test(f)});
+   const ir=f.match(/ref:\s*(<>|<|>|-)\s*"?(\w+)"?\."?(\w+)"?/);if(ir)refs.push([cur.name,m[1],ir[1],ir[2],ir[3]])}
+ }
+ const colH=[40,40,40];
+ tables.forEach((t,i)=>{if(t.x===null){const k=i%3;t.x=40+k*300;t.y=colH[k];}colH[i%3]=Math.max(colH[i%3],t.y+tH(t)+50)});
+ const find=(tn,cn)=>{const t=tables.find(x=>x.name.toLowerCase()===tn.toLowerCase());const c=t&&t.cols.find(x=>x.name.toLowerCase()===cn.toLowerCase());return c?{t:t.id,c:c.id}:null};
+ const rels=refs.map(r=>({id:nid(),from:find(r[0],r[1]),to:find(r[3],r[4]),card:ops[r[2]]})).filter(r=>r.from&&r.to);
+ return{tables,rels};
+}
+$('#bImp').addEventListener('click',()=>{
+ openModal(`<h2>Importar texto</h2><p class="hint">Pega un diagrama en formato DBML (el mismo que genera “Exportar texto”). Reemplaza el lienzo actual; puedes deshacerlo.</p>
+<textarea id="impTxt" spellcheck="false" aria-label="Texto DBML" placeholder="Table alumno {&#10;  id INT [pk]&#10;  nombre VARCHAR(80) [not null]&#10;}&#10;Ref: alumno.id < inscripcion.alumno_id"></textarea>
+<div class="row"><button class="pri" id="mImp">Importar</button><button data-close>Cancelar</button></div>`);
+ $('#mImp').onclick=()=>{const r=parse($('#impTxt').value);
+  if(!r.tables.length){toast('No encontré tablas. Revisa que empiecen con “Table nombre {”');return}
+  snap();S=r;sel=null;pending=null;closeModal();renderAll();toast(`${r.tables.length} tablas y ${r.rels.length} relaciones importadas`,true)};
+});
+
+/* teclado */
+document.addEventListener('keydown',e=>{
+ const typing=e.target.matches('input,textarea,select');
+ if(e.key==='Escape'){if(!ov.hidden)closeModal();else if(pending){pending=null;renderBoard()}}
+ else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!typing&&ov.hidden){e.preventDefault();undo()}
+ else if((e.key==='Delete'||e.key==='Backspace')&&!typing&&sel&&ov.hidden){e.preventDefault();delTable(sel)}
+});
+const ro=new ResizeObserver(sizeBoard);ro.observe($('#wrap'));
+renderAll();
+}
+</script>
+</body>
+</html>
