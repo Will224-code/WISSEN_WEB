@@ -16,7 +16,7 @@
 | Supabase Auth | Registro, inicio de sesión y sesiones |
 | PostgreSQL | Base de datos relacional |
 | API de Supabase | CRUD de publicaciones, usuarios, etc. |
-| Row Level Security | Permisos por rol (visitante, usuario, vendedor) |
+| Row Level Security | Permisos por rol (visitante, usuario, vendedor, administrador) |
 | Supabase Storage | Imágenes de las publicaciones |
 
 ## Herramientas

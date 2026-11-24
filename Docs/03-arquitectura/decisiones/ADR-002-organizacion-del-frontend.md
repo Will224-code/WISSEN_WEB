@@ -1,12 +1,12 @@
 # ADR-002 · Organización interna del frontend: por capas
 
-- **Estado:** Propuesta (pendiente de revisión del equipo)
+- **Estado:** Aceptado
 - **Fecha:** 2026-11-22
 - **Relacionada con:** [ADR-001](ADR-001-estilo-de-arquitectura.md)
 
 ## Contexto
 
-El frontend es una SPA con React (ADR-001). Tiene 7 vistas y un modelo de datos pequeño (el detalle lo define el análisis de base de datos). El equipo es estudiantil y el principio rector es facilitar el desarrollo y evitar la complejidad.
+El frontend es una SPA con React (ADR-001). Tiene 8 vistas principales (más ventanas emergentes y pantallas secundarias, como los reportes; ver el [prototipo](../../05-vista/02-boceto.html)) y un modelo de datos pequeño (el detalle lo define el análisis de base de datos). El equipo es estudiantil y el principio rector es facilitar el desarrollo y evitar la complejidad.
 
 Hay que decidir cómo ordenar el código dentro de `src/`.
 
@@ -15,7 +15,7 @@ Hay que decidir cómo ordenar el código dentro de `src/`.
 | Opción | Descripción | Resultado |
 |---|---|---|
 | **A. Por capas (por tipo de archivo)** | `pages/`, `components/`, `services/`, `context/`, `routes/`, `lib/` | **Elegida** |
-| B. Por funcionalidad | `features/catalogo/`, `features/vendedor/`, `features/auth/`, cada una con todo lo suyo | Descartada: excesiva para 7 vistas |
+| B. Por funcionalidad | `features/catalogo/`, `features/vendedor/`, `features/auth/`, cada una con todo lo suyo | Descartada: excesiva para 8 vistas |
 | C. Mixta | Capas para lo compartido y carpetas por funcionalidad para lo propio | Descartada: añade reglas sin necesidad |
 
 ## Decisión
@@ -24,7 +24,7 @@ El código se organiza **por capas**, es decir, por el tipo de cosa que hace cad
 
 ```
 src/
-├── pages/        una por vista (Inicio, Detalle, Login, ...)
+├── pages/        una por vista (Inicio, Detalle, Login, ..., Panel de administrador)
 ├── components/   piezas reutilizables (Navbar, TarjetaPublicacion, Filtro...)
 ├── context/      AuthContext: usuario y rol actuales
 ├── services/     funciones que hablan con Supabase
@@ -39,6 +39,7 @@ src/
 1. **Las páginas no llaman a Supabase directamente.** Usan `services/`, así el acceso a datos queda en un solo lugar.
 2. **La sesión y el rol viven en `AuthContext`.** Cualquier componente los consulta desde ahí.
 3. **El control de acceso por rol está en `RutaProtegida`.** Se aplica además de RLS en la base de datos, no en lugar de ella.
+4. **El navegador hace el trabajo; la base de datos solo envía, almacena y verifica.** Validar formularios, comprimir imágenes, contar, agrupar y calcular promedios ocurre en el frontend. La base de datos se limita a guardar y entregar datos y a **verificar** que quien pide algo tenga permiso (RLS, el trigger de registro y las funciones de baja y de suma a los contadores, ver [ADR-003](ADR-003-seguridad-y-permisos.md) y [ADR-006](ADR-006-reportes-con-contadores.md)). Lo que protege datos se verifica siempre en la base de datos, no en el navegador.
 
 ## Por qué
 

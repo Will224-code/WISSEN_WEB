@@ -1,6 +1,6 @@
 # ADR-004 · Almacenamiento de imágenes: Supabase Storage con procesamiento en el frontend
 
-- **Estado:** Propuesta (pendiente de revisión del equipo)
+- **Estado:** Aceptado
 - **Fecha:** 2026-11-22
 - **Relacionada con:** [ADR-001](ADR-001-estilo-de-arquitectura.md), [ADR-003](ADR-003-seguridad-y-permisos.md)
 
@@ -42,7 +42,7 @@ Las imágenes se guardan en **Supabase Storage** y la base de datos conserva sol
 5. **Versiones reducidas en el navegador:** si hace falta una miniatura para el catálogo, se genera en el frontend al subir la imagen, no con transformaciones de Supabase.
 6. **Nombre único:** cada archivo se renombra con un UUID, para que dos archivos con el mismo nombre no se sobrescriban.
 7. **Ruta con el identificador del vendedor:** permite que la política de Storage compruebe que solo el dueño modifica sus archivos.
-8. **Permisos (ADR-003):** lectura pública. Subir, editar y borrar solo el vendedor dueño.
+8. **Permisos (ADR-003):** lectura pública. Subir y editar solo el vendedor dueño; borrar, el vendedor dueño o el administrador (al dar de baja una publicación).
 9. **Limpieza:**
    - Al eliminar una publicación, se elimina también su imagen.
    - Se revisan periódicamente las imágenes subidas que nunca quedaron en una publicación (archivos huérfanos).

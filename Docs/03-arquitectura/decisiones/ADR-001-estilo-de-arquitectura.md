@@ -1,11 +1,11 @@
 # ADR-001 · Estilo de arquitectura: SPA con React + Supabase (BaaS)
 
-- **Estado:** Propuesta (pendiente de revisión del equipo)
+- **Estado:** Aceptada
 - **Fecha:** 2026-11-22
 
 ## Contexto
 
-Wissen Web es una página de publicaciones de ventas para estudiantes emprendedores de la UMT. Tiene tres roles (visitante, usuario registrado y vendedor), un catálogo público, contactos visibles solo con sesión y subida de imágenes por parte del vendedor.
+Wissen Web es una página de publicaciones de ventas para estudiantes emprendedores de la UMT. Tiene cuatro roles (visitante, usuario registrado, vendedor y administrador), un catálogo público, contactos de vendedor visibles en cada publicación y subida de imágenes por parte del vendedor.
 
 Condiciones que limitan la decisión:
 

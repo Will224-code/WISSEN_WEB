@@ -6,10 +6,14 @@ Página web de publicaciones de ventas para estudiantes emprendedores de la UMT.
 
 | Carpeta | Contenido |
 |---|---|
-| [01-producto](01-producto/) | Qué se va a hacer: idea inicial, glosario, objetivos y alcance |
+| [01-producto](01-producto/) | Qué se va a hacer: idea inicial, glosario, objetivos, alcance y usuarios |
 | [02-tecnologias](02-tecnologias/) | Con qué se va a hacer: tecnologías y herramientas, y el PDF de referencia sobre Supabase |
-| [03-arquitectura](03-arquitectura/) | Cómo está armado el sistema: decisiones de arquitectura (ADR), diagramas y documento principal |
+| [03-arquitectura](03-arquitectura/) | Cómo está armado el sistema: decisiones de arquitectura (ADR) y diagramas |
 | [04-analisis de base de datos](04-analisis%20de%20base%20de%20datos/) | Análisis de la base de datos: normalización (primera pasada) y material de apoyo |
+| [05-vista](05-vista/) | Cómo se ve y se recorre la aplicación: componentes de las pantallas, secuencias de navegación (Word) y el boceto navegable |
+| [02-boceto.html](05-vista/02-boceto.html) | Maqueta visual navegable (solo para validar pantallas y flujos; la aplicación real se hace en React) |
+| [03-instrucciones-refinar-vista.md](05-vista/03-instrucciones-refinar-vista.md) | Instrucciones para el compañero de la vista, en este orden: bases del diseño (`04-bases-del-diseno.md`), boceto refinado, reglas de CSS (`05-reglas-css.md`) y documento de desarrollo. Todo **pendiente de entregar**; es solo diseño y documentos, sin código |
+| 06-desarrollo | Documento de desarrollo (`00-documento-de-desarrollo.md`, **pendiente de entregar**): páginas, cuáles se modularizan, alertas, ventanas y componentes |
 
 ## Orden de lectura recomendado
 
@@ -17,14 +21,15 @@ Página web de publicaciones de ventas para estudiantes emprendedores de la UMT.
 2. [Glosario](01-producto/01-glosario.md)
 3. [Descripción y objetivos](01-producto/02-descripcion-objetivos.md)
 4. [Alcance](01-producto/03-alcance.md)
-5. [Tecnologías](02-tecnologias/04-tecnologias.md)
-6. [Decisiones de arquitectura](#decisiones-de-arquitectura-adr)
+5. [Usuarios](01-producto/04-usuarios.md)
+6. [Tecnologías](02-tecnologias/01-tecnologias.md)
+7. [Decisiones de arquitectura](#decisiones-de-arquitectura-adr)
 
 ## 03-arquitectura
 
 ### Decisiones de arquitectura (ADR)
 
-Cada ADR registra una decisión, las opciones que se compararon y por qué se eligió una. Todas están en estado **Propuesta**, pendientes de aprobación del equipo.
+Cada ADR registra una decisión, las opciones que se compararon y por qué se eligió una. El estado de cada una (Aceptada, Rechazada, etc.) está al inicio de su archivo.
 
 | ADR | Decisión |
 |---|---|
@@ -32,24 +37,26 @@ Cada ADR registra una decisión, las opciones que se compararon y por qué se el
 | [ADR-002](03-arquitectura/decisiones/ADR-002-organizacion-del-frontend.md) | Organización del frontend por capas |
 | [ADR-003](03-arquitectura/decisiones/ADR-003-seguridad-y-permisos.md) | Seguridad y permisos en dos capas (rutas protegidas y RLS) |
 | [ADR-004](03-arquitectura/decisiones/ADR-004-almacenamiento-de-imagenes.md) | Imágenes en Supabase Storage, con validación y compresión en el frontend |
+| [ADR-005](03-arquitectura/decisiones/ADR-005-verificacion-de-identidad.md) | Verificación de identidad de los usuarios (**Rechazada**: alargaría el proyecto y añadiría complejidad) |
+| [ADR-006](03-arquitectura/decisiones/ADR-006-reportes-con-contadores.md) | Reportes con contadores de interacciones por día: solo cantidades, sin identificar a nadie |
+| [ADR-007](03-arquitectura/decisiones/ADR-007-despliegue-y-entornos.md) | Despliegue en Vercel, backend en Supabase y variables de entorno en `.env` fuera de Git |
 
 ### Diagramas
 
 Carpeta [diagramas](03-arquitectura/diagramas/): pendiente (contexto, contenedores, componentes, secuencias y despliegue).
 
-### Documento principal
-
-[05-arquitectura-software.md](03-arquitectura/05-arquitectura-software.md) es un **borrador anterior que se va a reescribir** a partir de los ADR y los diagramas. No debe tomarse como fuente.
-
 ## Estado de la documentación
 
 | Parte | Estado |
 |---|---|
-| Producto (idea, glosario, objetivos, alcance) | Listo |
+| Producto (idea, glosario, objetivos, alcance, usuarios) | Listo |
+| Vista (componentes de las pantallas y secuencias) y boceto | Listo, alineados con el alcance |
 | Tecnologías | Listo |
-| ADR 001 a 004 | Propuesta, en revisión |
+| ADR 001 a 004 | Aceptadas |
+| ADR 005 | Rechazada (se deja como registro de las opciones y del motivo) |
+| ADR 006 y 007 | Propuesta, en revisión |
+| Refinado visual, reglas de CSS y documento de desarrollo | Instrucciones listas; entrega pendiente del compañero de la vista |
 | Diagramas | Pendiente |
-| Documento principal de arquitectura | Pendiente de reescribir |
 | Análisis de base de datos | Primera pasada hecha; falta una segunda para alinearla con los documentos |
 
 ## Notas
