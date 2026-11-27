@@ -9,7 +9,7 @@ Página web de publicaciones de ventas para estudiantes emprendedores de la UMT.
 | [01-producto](01-producto/) | Qué se va a hacer: idea inicial, glosario, objetivos, alcance y usuarios |
 | [02-tecnologias](02-tecnologias/) | Con qué se va a hacer: tecnologías y herramientas, y el PDF de referencia sobre Supabase |
 | [03-arquitectura](03-arquitectura/) | Cómo está armado el sistema: decisiones de arquitectura (ADR) y diagramas |
-| [04-analisis de base de datos](04-analisis%20de%20base%20de%20datos/) | Análisis de la base de datos: normalización (primera pasada) y material de apoyo |
+| [04-analisis de base de datos](04-analisis%20de%20base%20de%20datos/) | Análisis de la base de datos: abstracción de datos y normalización conceptual (actualizada), requerimientos y material de apoyo |
 | [00-manual-de-diseno-de-base-de-datos.md](04-analisis%20de%20base%20de%20datos/incicaciones/00-manual-de-diseno-de-base-de-datos.md) | Manual de apoyo para diseñar la base de datos: método para sacar datos de las pantallas, división de tablas recomendada y decisiones aclaradas (sin código) |
 | [01-guia-de-diagramas-e-imagenes.md](04-analisis%20de%20base%20de%20datos/incicaciones/01-guia-de-diagramas-e-imagenes.md) | Cómo entregar el diagrama general y una imagen por tabla con su justificación |
 | [02-relaciones-entre-tablas.md](04-analisis%20de%20base%20de%20datos/incicaciones/02-relaciones-entre-tablas.md) | Relaciones entre las tablas, su porqué y qué pasa al eliminar |
@@ -19,6 +19,7 @@ Página web de publicaciones de ventas para estudiantes emprendedores de la UMT.
 | [04-reglas-css.md](05-vista/04-reglas-css.md) | Reglas de CSS: catálogo de piezas, nombres, archivos de estilo y modularidad |
 | [boceto-refinado](05-vista/boceto-refinado/boceto-refinado.html) | Boceto refinado navegable (44 pantallas). Es el que sigue el equipo de React; la aplicación real se hace en React |
 | [06-desarrollo](06-desarrollo/00-documento-de-desarrollo.md) | Documento de desarrollo: páginas, piezas que se reutilizan, ventanas, alertas y decisiones sobre los pendientes |
+| [01-plan-de-desarrollo.md](06-desarrollo/01-plan-de-desarrollo.md) | Plan de desarrollo del 27 de noviembre al 2 de diciembre: calendario por día y por pista, contrato con Supabase, Git y pruebas |
 
 ## Orden de lectura recomendado
 

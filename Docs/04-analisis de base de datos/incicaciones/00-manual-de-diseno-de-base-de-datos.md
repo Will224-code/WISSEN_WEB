@@ -328,4 +328,4 @@ Estas decisiones **no** están resueltas en los documentos. Anótalas, propón u
 - [Glosario](../../01-producto/01-glosario.md) · [Alcance](../../01-producto/03-alcance.md) · [Usuarios](../../01-producto/04-usuarios.md)
 - [ADR-003 Seguridad y permisos](../../03-arquitectura/decisiones/ADR-003-seguridad-y-permisos.md) · [ADR-004 Imágenes](../../03-arquitectura/decisiones/ADR-004-almacenamiento-de-imagenes.md) · [ADR-006 Reportes](../../03-arquitectura/decisiones/ADR-006-reportes-con-contadores.md)
 - [Componentes de las pantallas](../../05-vista/00-Componentes-de-pantallas.docx) y [Secuencias y navegación](../../05-vista/01-Secuencias-y-navegacion.docx)
-- PDFs de esta carpeta: son la **primera pasada** del análisis (requerimientos y normalización). Sirven de apoyo, pero **si difieren de los documentos del proyecto, prevalecen estos**.
+- PDFs de esta carpeta: `01-Análisis_de_Requerimientos_y_Planeación_de_Datos` y `02-Abstracción_de_Datos_y_Normalización_Conceptual` (versiones actualizadas; las anteriores están en `primer analisis/`). Sirven de apoyo, pero **si difieren de los documentos del proyecto, prevalecen estos**.
