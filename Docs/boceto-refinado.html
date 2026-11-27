@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wissen — Boceto refinado (diseño Cuaderno)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   WISSEN · Boceto refinado · Diseño «Cuaderno»
+   Todos los valores salen de las variables de :root (ver 04-bases-del-diseno.md)
+   ===================================================================== */
+:root{
+  /* Colores */
+  --c-tinta:#16224A; --c-azul:#1F4FB8; --c-azul-oscuro:#163A8A; --c-azul-claro:#DCE6FF;
+  --c-amarillo:#FFE45C; --c-amarillo-claro:#FFF6C7; --c-menta:#9FE3C4;
+  --c-verde:#146B44; --c-verde-claro:#D9F5E8;
+  --c-rojo:#C42B21; --c-rojo-claro:#FFE0DB;
+  --c-morado:#5B34C4; --c-morado-claro:#EEE8FC;
+  --c-papel:#FFFDF6; --c-cuadricula:#E6ECF7; --c-campo:#F5F8FE; --c-linea:#C9D3E6; --c-suave:#4A5478; --c-blanco:#FFFFFF;
+  --c-velo:rgba(22,34,74,.70); --c-velo-claro:rgba(255,253,246,.88); --c-cinta:rgba(255,228,92,.85); --c-blanco-transp:rgba(255,255,255,.16);
+  /* Tipografía */
+  --f-titulos:'Baloo 2',Nunito,system-ui,sans-serif; --f-texto:Nunito,system-ui,sans-serif;
+  --tam-etiqueta:12px; --tam-apoyo:14px; --tam-cuerpo:16px; --tam-subtitulo:18px;
+  --tam-seccion:22px; --tam-pantalla:28px; --tam-detalle:36px; --tam-portada:48px;
+  --peso-normal:400; --peso-medio:600; --peso-fuerte:700; --peso-extra:800;
+  --interlineado:1.5; --interlineado-titulo:1.15;
+  /* Espacios */
+  --esp-1:4px; --esp-2:8px; --esp-3:12px; --esp-4:16px; --esp-5:24px; --esp-6:32px; --esp-7:48px;
+  /* Formas */
+  --rad-ficha:6px; --rad-control:10px; --rad-tarjeta:16px; --rad-ventana:20px; --rad-pildora:999px;
+  --borde:2px;
+  --sombra-relieve:0 4px 0 rgba(22,34,74,.35); --sombra-tarjeta:0 4px 0 var(--c-tinta); --sombra-flotante:0 8px 24px rgba(22,34,74,.18);
+  /* Tamaños */
+  --alto-control:44px; --alto-control-chico:36px; --ancho-pagina:1100px;
+  --avatar-chico:32px; --avatar:40px; --avatar-grande:112px; --foto-negocio:128px;
+  --icono-chico:16px; --icono:20px; --icono-grande:28px; --cuadricula:24px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--f-texto);font-size:var(--tam-cuerpo);line-height:var(--interlineado);color:var(--c-tinta);background:var(--c-linea);display:flex;min-height:100vh}
+h1,h2,h3{font-family:var(--f-titulos);font-weight:var(--peso-extra);line-height:var(--interlineado-titulo)}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit;font-size:var(--tam-cuerpo);color:var(--c-tinta)}
+a{color:var(--c-azul)}
+p{margin:0 0 var(--esp-3)}
+.ico{width:var(--icono);height:var(--icono);flex-shrink:0;vertical-align:-4px}
+.ico.chico{width:var(--icono-chico);height:var(--icono-chico);vertical-align:-3px}
+/* ---------- Foco y movimiento ---------- */
+:focus-visible{outline:3px solid var(--c-azul);outline-offset:2px}
+.top :focus-visible,#side :focus-visible{outline-color:var(--c-amarillo)}
+@media (prefers-reduced-motion:reduce){*{transition:none;animation-duration:3s}}
+/* ---------- Panel lateral del prototipo (no es parte de la app) ---------- */
+#side{width:270px;flex-shrink:0;background:var(--c-tinta);color:var(--c-blanco);padding:var(--esp-5) var(--esp-4);overflow-y:auto;height:100vh;position:sticky;top:0}
+#side h1{font-size:var(--tam-subtitulo);margin:0 0 var(--esp-1)}
+#side p.s{font-size:var(--tam-etiqueta);color:var(--c-linea);margin:0 0 var(--esp-3)}
+#side h2{font-family:var(--f-texto);font-size:var(--tam-etiqueta);letter-spacing:.08em;text-transform:uppercase;color:var(--c-amarillo);margin:var(--esp-4) 0 var(--esp-2)}
+#side a{display:block;color:var(--c-azul-claro);text-decoration:none;font-size:var(--tam-apoyo);padding:var(--esp-1) var(--esp-2);border-radius:var(--rad-ficha)}
+#side a:hover{background:var(--c-blanco-transp)}
+#side a.on{background:var(--c-amarillo);color:var(--c-tinta);font-weight:var(--peso-fuerte)}
+#side .demo{background:var(--c-blanco-transp);border-radius:var(--rad-control);padding:var(--esp-3);font-size:var(--tam-etiqueta);margin-top:var(--esp-4);color:var(--c-azul-claro)}
+#side .demo b{color:var(--c-blanco)}
+#main{flex:1;min-width:0;padding:var(--esp-5);display:flex;justify-content:center;align-items:flex-start;overflow:auto}
+#screen{width:100%;max-width:var(--ancho-pagina);min-height:720px;position:relative;overflow:hidden;border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-ventana);background-color:var(--c-papel);background-image:linear-gradient(var(--c-cuadricula) 1px,transparent 1px),linear-gradient(90deg,var(--c-cuadricula) 1px,transparent 1px);background-size:var(--cuadricula) var(--cuadricula)}
+#tag{position:absolute;bottom:var(--esp-2);left:var(--esp-4);font-size:var(--tam-etiqueta);color:var(--c-suave);z-index:2}
+[style*="--cols"]{grid-template-columns:var(--cols)}
+/* Las rejillas que centran su contenido no deben crecer más que la pantalla */
+[style*="place-items:center"],.portada,.ov{grid-template-columns:minmax(0,1fr)}
+/* ---------- Barra superior, marca y pestañas ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:var(--esp-3);flex-wrap:wrap;min-height:64px;background:var(--c-azul);color:var(--c-blanco);padding:var(--esp-3) var(--esp-5)}
+.top b{font-family:var(--f-titulos);font-size:var(--tam-subtitulo)}
+.marca{display:flex;align-items:center;gap:var(--esp-2);font-family:var(--f-titulos);font-weight:var(--peso-extra);font-size:var(--tam-seccion)}
+.marca--tinta{color:var(--c-tinta)}
+.logo{width:var(--alto-control-chico);height:var(--alto-control-chico);border-radius:var(--rad-control);background:var(--c-blanco);color:var(--c-azul);display:grid;place-items:center;flex-shrink:0}
+.logo--azul{background:var(--c-azul);color:var(--c-blanco)}
+.tabs{display:flex;gap:var(--esp-1);background:var(--c-campo);border-radius:var(--rad-control);padding:var(--esp-1)}
+.tabs button{border:0;background:transparent;min-height:var(--alto-control-chico);padding:0 var(--esp-4);border-radius:var(--rad-ficha);font-size:var(--tam-apoyo);font-weight:var(--peso-medio);color:var(--c-suave)}
+.tabs button:hover{color:var(--c-tinta)}
+.tabs button.on{background:var(--c-blanco);color:var(--c-tinta);font-weight:var(--peso-fuerte);box-shadow:var(--sombra-relieve)}
+.top:not(.adm) .tabs{align-self:flex-start;margin-top:calc(-1 * var(--esp-3));background:transparent;padding:0;gap:var(--esp-2)}
+.top:not(.adm) .tabs button{min-height:var(--alto-control);padding:var(--esp-2) var(--esp-5);border-radius:0 0 var(--rad-tarjeta) var(--rad-tarjeta);background:var(--c-amarillo);color:var(--c-tinta);font-family:var(--f-titulos);font-size:var(--tam-cuerpo);font-weight:var(--peso-fuerte);box-shadow:none;opacity:.8}
+.top:not(.adm) .tabs button:nth-child(2){background:var(--c-menta)}
+.top:not(.adm) .tabs button:nth-child(3){background:var(--c-rojo-claro)}
+.top:not(.adm) .tabs button:hover{opacity:1}
+.top:not(.adm) .tabs button.on{opacity:1;padding-top:var(--esp-5);font-weight:var(--peso-extra)}
+.top .lnk{color:var(--c-blanco)}
+.top.adm{background:var(--c-morado)}
+.top.adm .logo{color:var(--c-morado)}
+.top.adm.panel{row-gap:var(--esp-3)}
+.top.adm.panel .tabs{order:3;width:100%;flex-wrap:wrap}
+.top.adm .tabs{background:var(--c-blanco-transp)}
+.top.adm .tabs button{flex:1 1 auto;white-space:nowrap;color:var(--c-blanco)}
+.top.adm .tabs button.on{background:var(--c-blanco);color:var(--c-morado)}
+.top.adm .tabs button .n{display:inline-block;margin-left:var(--esp-1);font-size:var(--tam-etiqueta);background:var(--c-blanco-transp);padding:0 var(--esp-2);border-radius:var(--rad-pildora)}
+.top.adm .tabs button.on .n{background:var(--c-morado);color:var(--c-blanco)}
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--esp-2);min-height:var(--alto-control);padding:0 var(--esp-4);border:var(--borde) solid transparent;border-radius:var(--rad-control);background:var(--c-azul);color:var(--c-blanco);font-size:var(--tam-cuerpo);font-weight:var(--peso-extra);text-decoration:none;box-shadow:var(--sombra-relieve)}
+.btn:hover{filter:brightness(1.1)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.green{background:var(--c-verde)} .btn.purple{background:var(--c-morado)} .btn.pink{background:var(--c-rojo)}
+.btn.light{background:var(--c-amarillo);color:var(--c-tinta)}
+.btn.lgreen{background:var(--c-verde-claro);color:var(--c-verde)}
+.btn.out{background:var(--c-blanco);color:var(--c-azul);border-color:var(--c-azul);box-shadow:none}
+.btn.outpink{background:var(--c-blanco);color:var(--c-rojo);border-color:var(--c-rojo);box-shadow:none}
+.btn.out:hover,.btn.outpink:hover{filter:none;background:var(--c-campo)}
+.btn.sm{min-height:var(--alto-control-chico);padding:0 var(--esp-3);font-size:var(--tam-apoyo)}
+.btn:disabled{background:var(--c-linea);color:var(--c-suave);border-color:var(--c-linea);box-shadow:none;filter:none;transform:none;cursor:not-allowed}
+.btn.ancho{width:100%}
+.top .btn.out{border-color:var(--c-blanco);color:var(--c-tinta)}
+.top .btn.sm:not(.out):not(.purple){background:var(--c-blanco);color:var(--c-azul)}
+.lnk{display:inline-flex;align-items:center;gap:var(--esp-1);background:none;border:0;font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte);padding:var(--esp-1);border-radius:var(--rad-ficha)}
+.lnk:hover{text-decoration:underline}
+/* ---------- Avatar y foto ---------- */
+.avatar{width:var(--avatar);height:var(--avatar);border-radius:50%;background:var(--c-amarillo);color:var(--c-tinta);display:grid;place-items:center;border:var(--borde) solid var(--c-tinta);padding:0;flex-shrink:0;overflow:hidden}
+.avatar svg{width:55%;height:55%}
+.avatar.big{width:var(--avatar-grande);height:var(--avatar-grande)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+/* ---------- Tarjeta, página y títulos ---------- */
+.card{background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-tarjeta);box-shadow:var(--sombra-tarjeta);padding:var(--esp-5)}
+.wrap{padding:var(--esp-5)}
+h2.t{display:inline-block;margin:0 0 var(--esp-2);padding:0 var(--esp-2);font-size:var(--tam-pantalla);background:linear-gradient(transparent 58%,var(--c-amarillo) 58%)}
+.resaltado{display:inline-block;padding:0 var(--esp-2);background:linear-gradient(transparent 58%,var(--c-amarillo) 58%)}
+.titulo-seccion{margin:0 0 var(--esp-2);font-size:var(--tam-pantalla)}
+.muted{color:var(--c-suave)}
+.centro{text-align:center}
+.lbl{font-size:var(--tam-etiqueta);font-weight:var(--peso-extra);color:var(--c-suave);text-transform:uppercase;letter-spacing:.05em}
+/* ---------- Tarjeta de publicación (ficha) ---------- */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--esp-6) var(--esp-5);padding-top:var(--esp-3)}
+.pcard{position:relative;background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-ficha);box-shadow:var(--sombra-tarjeta);padding:var(--esp-3);cursor:pointer;transition:transform .15s}
+.pcard::before{content:"";position:absolute;top:calc(-1 * var(--esp-3));left:50%;width:80px;height:var(--esp-5);background:var(--c-cinta);transform:translateX(-50%) rotate(-3deg);z-index:1}
+.grid3>.pcard:nth-child(odd){transform:rotate(-1deg)}
+.grid3>.pcard:nth-child(even){transform:rotate(1deg)}
+.grid3>.pcard:hover,.grid3>.pcard:focus-visible{transform:translateY(-4px)}
+.pcard.new{background:var(--c-amarillo-claro)}
+.pcard .nm{margin:var(--esp-2) var(--esp-1) 0;font-family:var(--f-titulos);font-size:var(--tam-subtitulo);font-weight:var(--peso-fuerte)}
+.pcard .pr{margin:0 var(--esp-1);font-family:var(--f-titulos);font-size:var(--tam-subtitulo);font-weight:var(--peso-extra);color:var(--c-rojo)}
+.badge{position:absolute;top:var(--esp-4);left:var(--esp-4);z-index:2;background:var(--c-tinta);color:var(--c-blanco);font-size:var(--tam-etiqueta);font-weight:var(--peso-fuerte);padding:var(--esp-1) var(--esp-2);border-radius:var(--rad-pildora)}
+.art{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--rad-ficha)}
+.art i{position:absolute;display:block}
+.precio{display:inline-block;padding:0 var(--esp-3);border:3px solid var(--c-rojo);border-radius:50%;font-family:var(--f-titulos);font-size:var(--tam-pantalla);font-weight:var(--peso-extra);color:var(--c-rojo);line-height:var(--interlineado-titulo)}
+/* ---------- Campos ---------- */
+label.f{display:block;margin:var(--esp-3) 0 var(--esp-2);font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte)}
+.in{width:100%;min-height:var(--alto-control);padding:var(--esp-2) var(--esp-3);border:0;border-bottom:var(--borde) solid var(--c-azul);border-radius:var(--rad-control) var(--rad-control) 0 0;background:var(--c-campo);outline-offset:2px}
+.in:hover{background:var(--c-azul-claro)}
+.in::placeholder{color:var(--c-suave)}
+.in:disabled{background:var(--c-campo);border-bottom-color:var(--c-linea);cursor:not-allowed}
+.in[aria-invalid="true"]{border-bottom-color:var(--c-rojo);background:var(--c-rojo-claro)}
+textarea.in{min-height:96px;resize:vertical;line-height:28px;border:var(--borde) solid var(--c-linea);border-radius:var(--rad-control);background-color:var(--c-blanco);background-image:linear-gradient(transparent 27px,var(--c-cuadricula) 27px);background-size:100% 28px}
+select.in{cursor:pointer}
+.row{display:flex;flex-wrap:wrap;gap:var(--esp-3)} .row>*{flex:1 1 140px} .row>.ancho-doble{flex:1.5 1 180px}
+.acciones{margin-top:var(--esp-4)}
+.separador{margin-top:var(--esp-5);padding-top:var(--esp-4);border-top:var(--borde) dashed var(--c-linea)}
+/* ---------- Alertas y avisos ---------- */
+.alert{display:flex;align-items:center;gap:var(--esp-2);margin-top:var(--esp-3);padding:var(--esp-2) var(--esp-3);border:var(--borde) solid var(--c-rojo);border-radius:var(--rad-control);background:var(--c-rojo-claro);color:var(--c-rojo);font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte)}
+.ok{margin-top:var(--esp-3);padding:var(--esp-2) var(--esp-3);border-radius:var(--rad-control);background:var(--c-verde-claro);color:var(--c-verde);font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte)}
+.toast{position:absolute;bottom:var(--esp-5);left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:var(--esp-2);background:var(--c-tinta);color:var(--c-blanco);padding:var(--esp-3) var(--esp-4);border-radius:var(--rad-control);font-size:var(--tam-apoyo)}
+.adm-hint{display:flex;align-items:center;gap:var(--esp-2);margin-bottom:var(--esp-4);padding:var(--esp-2) var(--esp-3);border-radius:var(--rad-control);background:var(--c-morado-claro);color:var(--c-morado);font-size:var(--tam-apoyo)}
+.vacio{display:flex;flex-direction:column;align-items:center;gap:var(--esp-3);padding:var(--esp-7) var(--esp-4);text-align:center;color:var(--c-suave);background:var(--c-blanco);border:var(--borde) dashed var(--c-linea);border-radius:var(--rad-tarjeta)}
+.vacio .ico{width:var(--icono-grande);height:var(--icono-grande);color:var(--c-azul)}
+.vacio p{margin:0;font-weight:var(--peso-medio)}
+.cargando{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:var(--c-velo-claro)}
+.cargando>div{display:flex;flex-direction:column;align-items:center;gap:var(--esp-3);color:var(--c-azul);font-weight:var(--peso-fuerte)}
+.cargando .ico{width:var(--icono-grande);height:var(--icono-grande);animation:girar 1s linear infinite}
+@keyframes girar{to{transform:rotate(360deg)}}
+/* ---------- Calificación, galería, información ---------- */
+.stars{display:inline-flex;gap:0;vertical-align:middle}
+.stars .ico{fill:var(--c-amarillo);color:var(--c-tinta);stroke-width:1.5}
+.stars .off .ico{fill:transparent;color:var(--c-linea)}
+.stars.click span{cursor:pointer;border-radius:var(--rad-ficha)}
+.stars.click .ico{width:var(--icono-grande);height:var(--icono-grande)}
+.thumbs{display:flex;flex-wrap:wrap;gap:var(--esp-2);margin-top:var(--esp-3)}
+.thumbs .art{width:64px;cursor:pointer;border:3px solid transparent}
+.thumbs .art.on{border-color:var(--c-azul)}
+.thumbs>div{border-radius:var(--rad-ficha)}
+.counter{position:absolute;right:var(--esp-2);bottom:var(--esp-2);background:var(--c-tinta);color:var(--c-blanco);font-size:var(--tam-etiqueta);font-weight:var(--peso-fuerte);padding:var(--esp-1) var(--esp-2);border-radius:var(--rad-ficha)}
+.galeria{position:relative}
+.galeria-foto{position:relative;padding:var(--esp-3) var(--esp-3) var(--esp-4);background:var(--c-blanco);box-shadow:var(--sombra-flotante);transform:rotate(-1deg)}
+.galeria::before{content:"";position:absolute;top:calc(-1 * var(--esp-3));left:50%;width:96px;height:var(--esp-5);background:var(--c-cinta);transform:translateX(-50%) rotate(2deg);z-index:2}
+.hoja{position:relative;padding:var(--esp-6) var(--esp-6) var(--esp-6) var(--esp-7);background-color:var(--c-papel);background-image:linear-gradient(var(--c-cuadricula) 1px,transparent 1px),linear-gradient(90deg,var(--c-cuadricula) 1px,transparent 1px);background-size:var(--cuadricula) var(--cuadricula);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-tarjeta);box-shadow:var(--sombra-tarjeta)}
+.hoja::before{content:"";position:absolute;left:var(--esp-6);top:0;bottom:0;width:var(--borde);background:var(--c-rojo)}
+.info{display:flex;align-items:center;gap:var(--esp-3);padding:var(--esp-3) 0}
+.ic{width:var(--alto-control-chico);height:var(--alto-control-chico);flex-shrink:0;display:grid;place-items:center;border-radius:var(--rad-control);background:var(--c-campo);color:var(--c-tinta)}
+.ic--amarillo{background:var(--c-amarillo)}
+a.wa{display:inline-flex;align-items:center;gap:var(--esp-1);color:var(--c-azul);font-weight:var(--peso-extra)}
+.vbtn{cursor:pointer;border-radius:var(--rad-control);padding-left:var(--esp-2);padding-right:var(--esp-2);transition:background .15s}
+.vbtn:hover{background:var(--c-azul-claro)}
+.cmt{display:flex;gap:var(--esp-3);padding:var(--esp-3) 0;border-bottom:var(--borde) dashed var(--c-linea)}
+.cmt .avatar{width:var(--avatar-chico);height:var(--avatar-chico);background:var(--c-azul-claro)}
+.csort{display:flex;align-items:center;gap:var(--esp-2);font-size:var(--tam-apoyo);color:var(--c-suave)}
+.csort select{min-height:var(--alto-control-chico);padding:0 var(--esp-2);border:var(--borde) solid var(--c-linea);border-radius:var(--rad-control);background:var(--c-blanco);font-size:var(--tam-apoyo)}
+.chip{display:inline-flex;align-items:center;gap:var(--esp-1);padding:var(--esp-1) var(--esp-3);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-ficha);background:var(--c-azul-claro);color:var(--c-tinta);font-size:var(--tam-apoyo);font-weight:var(--peso-extra);text-decoration:none}
+.chip--menta{background:var(--c-menta)}
+.fila-chips{display:flex;flex-wrap:wrap;gap:var(--esp-2);margin-top:var(--esp-1)}
+.tag{display:inline-block;padding:var(--esp-1) var(--esp-2);border-radius:var(--rad-pildora);background:var(--c-tinta);color:var(--c-blanco);font-size:var(--tam-etiqueta);font-weight:var(--peso-fuerte)}
+.tag.h{background:var(--c-morado)}
+/* ---------- Negocios: tarjeta, foto, credencial ---------- */
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--esp-5)}
+.bcard{text-align:center;cursor:pointer;padding:var(--esp-4) var(--esp-3);background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-tarjeta);box-shadow:var(--sombra-tarjeta);transition:transform .15s}
+.bcard:hover{transform:translateY(-4px)}
+.bcard .bn{margin-top:var(--esp-3);font-weight:var(--peso-fuerte)}
+.bcard .bc{margin-top:var(--esp-1);font-size:var(--tam-etiqueta);color:var(--c-suave)}
+.bpic{width:100%;max-width:var(--foto-negocio);aspect-ratio:1;margin:auto;display:grid;place-items:center;overflow:hidden;border-radius:50%;border:var(--borde) solid var(--c-tinta);color:var(--c-tinta)}
+.bpic svg{width:42%;height:42%}
+.bpic.big{width:var(--foto-negocio);max-width:var(--foto-negocio);margin:0;flex-shrink:0}
+.bpic img{width:100%;height:100%;object-fit:cover}
+.barra-volver{display:flex;align-items:center;gap:var(--esp-3);flex-wrap:wrap}
+.credencial{max-width:900px;margin:var(--esp-4) auto 0;background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-ventana);box-shadow:var(--sombra-tarjeta);overflow:hidden}
+.credencial-franja{display:flex;justify-content:space-between;align-items:center;padding:var(--esp-3) var(--esp-5);background:var(--c-azul);color:var(--c-blanco);font-family:var(--f-titulos);font-weight:var(--peso-extra);letter-spacing:.04em}
+.credencial-franja i{display:block;width:72px;height:var(--esp-3);border-radius:var(--rad-pildora);background:var(--c-campo)}
+.credencial-cuerpo{display:flex;flex-wrap:wrap;gap:var(--esp-5);align-items:flex-start;padding:var(--esp-5)}
+.credencial .bpic.big{border-radius:var(--rad-tarjeta);aspect-ratio:4/5;height:auto}
+.credencial-datos{flex:1 1 260px;display:flex;flex-direction:column;align-items:flex-start;gap:var(--esp-2)}
+.credencial-contacto{width:100%;padding-top:var(--esp-3);border-top:var(--borde) dashed var(--c-linea)}
+/* ---------- Inicio de sesión (libreta abierta) ---------- */
+.portada{display:grid;place-items:center;min-height:716px;background:var(--c-azul)}
+.libreta{display:flex;flex-wrap:wrap;width:900px;max-width:100%;border-radius:var(--rad-ventana);overflow:hidden;box-shadow:0 12px 0 var(--c-azul-oscuro)}
+.libreta-hoja{flex:1 1 340px;position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:var(--esp-5);min-height:440px;padding:var(--esp-6) var(--esp-6) var(--esp-6) var(--esp-7);background-color:var(--c-papel);background-image:linear-gradient(var(--c-cuadricula) 1px,transparent 1px),linear-gradient(90deg,var(--c-cuadricula) 1px,transparent 1px);background-size:var(--cuadricula) var(--cuadricula)}
+.libreta-hoja::before{content:"";position:absolute;left:var(--esp-6);top:0;bottom:0;width:var(--borde);background:var(--c-rojo)}
+.libreta-espiral{flex:0 0 var(--esp-6);display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:var(--esp-4) 0;background:var(--c-campo)}
+.libreta-espiral span{width:20px;height:20px;border-radius:50%;background:var(--c-tinta);border:4px solid var(--c-linea)}
+.libreta-form{flex:1 1 340px;padding:var(--esp-6);background:var(--c-blanco)}
+.notas{display:flex;flex-wrap:wrap;gap:var(--esp-2)}
+.nota{display:inline-block;padding:var(--esp-1) var(--esp-3);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-control);background:var(--c-blanco);font-size:var(--tam-apoyo);font-weight:var(--peso-extra);transform:rotate(-3deg)}
+.nota--menta{background:var(--c-menta);transform:rotate(2deg)}
+.nota--rosa{background:var(--c-rojo-claro);transform:rotate(-1deg)}
+.portada-titulo{margin:0;font-size:var(--tam-portada)}
+.portada-lema{margin:var(--esp-2) 0 0;font-size:var(--tam-subtitulo);font-weight:var(--peso-fuerte);color:var(--c-azul)}
+/* ---------- Ventanas emergentes y menús ---------- */
+.ov{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:var(--esp-4);background:var(--c-velo)}
+.modal{width:400px;max-width:100%;padding:var(--esp-5);text-align:center;background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-ventana);box-shadow:var(--sombra-tarjeta)}
+.modal h3{margin:var(--esp-3) 0 var(--esp-2);font-size:var(--tam-seccion)}
+.modal p{margin:0 0 var(--esp-4);color:var(--c-suave);font-size:var(--tam-apoyo)}
+.mic{width:56px;height:56px;margin:0 auto;display:grid;place-items:center;border-radius:50%}
+.mic .ico,.mic svg{width:var(--icono-grande);height:var(--icono-grande)}
+.stack{display:flex;flex-direction:column;gap:var(--esp-3)}
+.menu{position:absolute;z-index:4;min-width:200px;padding:var(--esp-2);background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-tarjeta);box-shadow:var(--sombra-flotante)}
+.menu button{display:flex;align-items:center;gap:var(--esp-3);width:100%;min-height:var(--alto-control);padding:0 var(--esp-3);border:0;background:none;border-radius:var(--rad-control);font-size:var(--tam-apoyo);color:var(--c-tinta);text-align:left}
+.menu button:hover{background:var(--c-campo)}
+.menu button.del{color:var(--c-rojo)}
+.radio{display:flex;align-items:center;gap:var(--esp-3);min-height:var(--alto-control);margin-bottom:var(--esp-2);padding:0 var(--esp-3);border:var(--borde) solid var(--c-linea);border-radius:var(--rad-control);background:var(--c-blanco);cursor:pointer;text-align:left}
+.radio .dot{width:18px;height:18px;flex-shrink:0;border-radius:50%;border:var(--borde) solid var(--c-suave)}
+.radio.on{border-color:var(--c-rojo)} .radio.on .dot{border:5px solid var(--c-rojo)}
+.radio.blue.on{border-color:var(--c-azul)} .radio.blue.on .dot{border-color:var(--c-azul)}
+.cam{position:relative;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center;border-radius:var(--rad-tarjeta);background:var(--c-tinta);color:var(--c-blanco)}
+.cam .guide{width:46%;aspect-ratio:1;border:var(--borde) dashed var(--c-linea);border-radius:50%}
+/* ---------- Perfil y negocio ---------- */
+.bizrow{display:flex;align-items:center;gap:var(--esp-3);min-height:56px;margin-bottom:var(--esp-3);padding:var(--esp-2) var(--esp-4);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-control);background:var(--c-blanco);cursor:pointer}
+.bizrow:hover{background:var(--c-azul-claro)}
+.bizrow.add{justify-content:center;border-style:dashed;border-color:var(--c-azul);color:var(--c-azul);font-weight:var(--peso-fuerte)}
+.drop{position:relative;aspect-ratio:16/10;overflow:hidden;display:grid;place-items:center;text-align:center;font-size:var(--tam-apoyo);color:var(--c-suave);background:var(--c-blanco);border:var(--borde) dashed var(--c-azul);border-radius:var(--rad-tarjeta);cursor:pointer}
+.drop .ico{width:var(--icono-grande);height:var(--icono-grande);color:var(--c-azul)}
+.slots{display:flex;flex-wrap:wrap;gap:var(--esp-2);margin-top:var(--esp-2)}
+.slot{position:relative;width:56px;height:56px;overflow:hidden;display:grid;place-items:center;color:var(--c-azul);background:var(--c-blanco);border:var(--borde) dashed var(--c-azul);border-radius:var(--rad-control);cursor:pointer}
+.slot .art{width:100%;height:100%;aspect-ratio:auto;border-radius:0}
+.slot .x{position:absolute;top:2px;right:2px;display:grid;place-items:center;border-radius:50%;background:var(--c-blanco);color:var(--c-rojo)}
+.slot .x .ico{width:var(--icono-chico);height:var(--icono-chico)}
+.social{width:56px;height:56px;display:grid;place-items:center;border:var(--borde) solid var(--c-tinta);border-radius:50%;color:var(--c-tinta)}
+.netblock{margin-bottom:var(--esp-3);padding:var(--esp-3);border:var(--borde) solid var(--c-linea);border-radius:var(--rad-control);background:var(--c-blanco)}
+.netblock .in{margin-top:var(--esp-2)}
+/* ---------- Administrador ---------- */
+.adm-crumb{display:flex;flex-wrap:wrap;align-items:center;gap:var(--esp-1);margin-bottom:var(--esp-3);font-size:var(--tam-apoyo);color:var(--c-suave)}
+.adm-crumb a{color:var(--c-azul);font-weight:var(--peso-fuerte);cursor:pointer;text-decoration:underline}
+.adm-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:var(--esp-4);margin-bottom:var(--esp-4)}
+.adm-search{min-height:var(--alto-control);min-width:240px;max-width:100%;padding:0 var(--esp-3);border:var(--borde) solid var(--c-linea);border-radius:var(--rad-control);background:var(--c-blanco);font-size:var(--tam-apoyo)}
+input.adm-search{padding-left:calc(2 * var(--esp-3) + var(--icono-chico));background:var(--c-blanco) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5478' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8' /%3E %3Cpath d='m21 21-4.3-4.3' /%3E%3C/svg%3E") var(--esp-3) center/var(--icono-chico) no-repeat}
+.adm-search:hover{border-color:var(--c-azul)}
+.danger{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--esp-3);margin-top:var(--esp-4);padding:var(--esp-3) var(--esp-4);border:var(--borde) dashed var(--c-rojo);border-radius:var(--rad-tarjeta);background:var(--c-rojo-claro)}
+.danger b{color:var(--c-rojo)}
+.arow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--esp-3);padding:var(--esp-3) var(--esp-1);border-bottom:var(--borde) dashed var(--c-linea)}
+.arow:last-child{border-bottom:0}
+.arow.click{cursor:pointer;border-radius:var(--rad-control)}
+.arow.click:hover{background:var(--c-campo)}
+.arow .go{color:var(--c-azul);font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte);opacity:0;transition:opacity .15s}
+.arow.click:hover .go,.arow.click:focus-visible .go{opacity:1}
+.bfbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--esp-3);margin-bottom:var(--esp-4)}
+.bfbar .chips{display:flex;flex-wrap:wrap;gap:var(--esp-2)}
+.bfbar .chips button{min-height:var(--alto-control-chico);padding:0 var(--esp-4);border:var(--borde) solid var(--c-linea);border-radius:var(--rad-pildora);background:var(--c-blanco);color:var(--c-suave);font-size:var(--tam-apoyo);font-weight:var(--peso-fuerte)}
+.bfbar .chips button:hover{border-color:var(--c-azul);color:var(--c-azul)}
+.bfbar .chips button.on{background:var(--c-azul);border-color:var(--c-azul);color:var(--c-blanco)}
+/* ---------- Reportes ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--esp-3);margin-bottom:var(--esp-4)}
+.kpi{padding:var(--esp-4);background:var(--c-blanco);border:var(--borde) solid var(--c-tinta);border-radius:var(--rad-tarjeta)}
+.kpi .n{font-family:var(--f-titulos);font-size:var(--tam-detalle);font-weight:var(--peso-extra);line-height:var(--interlineado-titulo)}
+.kpi .l{display:flex;align-items:center;gap:var(--esp-1);margin-top:var(--esp-1);font-size:var(--tam-apoyo);color:var(--c-suave)}
+.hbar{display:flex;align-items:center;gap:var(--esp-3);margin:var(--esp-3) 0}
+.hbar .nm{width:190px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:var(--tam-apoyo);font-weight:var(--peso-medio)}
+.hbar .tr{flex:1;height:20px;overflow:hidden;border-radius:var(--rad-ficha);background:var(--c-campo)}
+.hbar .fl{height:100%;border-radius:var(--rad-ficha);background:var(--c-verde)}
+.hbar .vl{width:36px;text-align:right;font-weight:var(--peso-fuerte)}
+.dbars{display:flex;align-items:flex-end;gap:var(--esp-1);height:140px;padding-top:var(--esp-2);border-bottom:var(--borde) solid var(--c-linea)}
+.dbars .d{flex:1;display:flex;align-items:flex-end;gap:0;height:100%}
+.dbars i{display:block;flex:1;border-radius:var(--rad-ficha) var(--rad-ficha) 0 0}
+.legend{display:flex;gap:var(--esp-4);margin-top:var(--esp-2);font-size:var(--tam-apoyo);color:var(--c-suave)}
+.legend b{display:inline-block;width:12px;height:12px;margin-right:var(--esp-2);border-radius:var(--rad-ficha)}
+.tabla-scroll{overflow-x:auto}
+.rtable{width:100%;min-width:560px;border-collapse:collapse}
+.rtable th{padding:var(--esp-2) var(--esp-3);text-align:right;font-size:var(--tam-etiqueta);text-transform:uppercase;letter-spacing:.04em;color:var(--c-suave);border-bottom:var(--borde) solid var(--c-linea)}
+.rtable th:first-child{text-align:left}
+.rtable td{padding:var(--esp-3);text-align:right;border-bottom:var(--borde) dashed var(--c-linea)}
+.rtable td:first-child{text-align:left}
+.rtable tr.click{cursor:pointer}
+.rtable tr.click:hover td{background:var(--c-campo)}
+/* ---------- Responsivo ---------- */
+@media (max-width:1023px){
+  body{flex-direction:column}
+  #side{width:100%;height:auto;position:static}
+  .grid4{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:599px){
+  #main{padding:var(--esp-2)}
+  .wrap{padding:var(--esp-4)}
+  [style*="--cols"]{grid-template-columns:minmax(0,1fr)}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--esp-5) var(--esp-3)}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--esp-3)}
+  .top{padding:var(--esp-2) var(--esp-4)}
+  .top:not(.adm) .tabs{order:3;width:100%;margin-top:0}
+  .top:not(.adm) .tabs button{flex:1;padding:var(--esp-2) var(--esp-3);border-radius:var(--rad-control);font-size:var(--tam-apoyo)}
+  .top:not(.adm) .tabs button.on{padding-top:var(--esp-2)}
+  .card{padding:var(--esp-4)}
+  .hoja{padding:var(--esp-5) var(--esp-4) var(--esp-5) var(--esp-6)}
+  .hoja::before{left:var(--esp-4)}
+  .libreta-espiral{display:none}
+  .libreta-hoja{min-height:0;padding:var(--esp-5) var(--esp-4) var(--esp-5) var(--esp-6)}
+  .libreta-hoja::before{left:var(--esp-4)}
+  .libreta-form{padding:var(--esp-5) var(--esp-4)}
+  .portada{min-height:0;padding:var(--esp-4)}
+  .portada-titulo{font-size:var(--tam-detalle)}
+  .adm-search,.bfbar>*{min-width:0;flex:1 1 100%}
+  .hbar .nm{width:110px}
+  .credencial-cuerpo{padding:var(--esp-4)}
+  .modal{padding:var(--esp-4)}
+  .kpi .n{font-size:var(--tam-pantalla)}
+}
+
+</style>
+</head>
+<body>
+<nav id="side"></nav>
+<main id="main"><div id="screen"></div></main>
+
+<script>
+/* ======================= DATOS DEL PROTOTIPO ======================= */
+const ICON_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" /></svg>';
+const ICON_SHOP='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" /> <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /> <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" /> <path d="M2 7h20" /> <path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7" /></svg>';
+const IC={"atras": "<path d=\"m15 18-6-6 6-6\" />", "sig": "<path d=\"m9 18 6-6-6-6\" />", "sig-chico": "<path d=\"m9 18 6-6-6-6\" />", "mas": "<path d=\"M5 12h14\" /> <path d=\"M12 5v14\" />", "salir": "<path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" /> <polyline points=\"16 17 21 12 16 7\" /> <line x1=\"21\" x2=\"9\" y1=\"12\" y2=\"12\" />", "etiqueta": "<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\" /> <circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "candado": "<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /> <path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />", "opciones": "<circle cx=\"12\" cy=\"12\" r=\"1\" /> <circle cx=\"12\" cy=\"5\" r=\"1\" /> <circle cx=\"12\" cy=\"19\" r=\"1\" />", "camara": "<path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\" /> <circle cx=\"12\" cy=\"13\" r=\"3\" />", "enlace": "<path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\" /> <path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\" />", "alerta": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\" /> <path d=\"M12 9v4\" /> <path d=\"M12 17h.01\" />", "ver": "<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /> <circle cx=\"12\" cy=\"12\" r=\"3\" />", "calendario": "<path d=\"M8 2v4\" /> <path d=\"M16 2v4\" /> <rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\" /> <path d=\"M3 10h18\" />", "cerrar": "<path d=\"M18 6 6 18\" /> <path d=\"m6 6 12 12\" />", "imagen": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\" /> <circle cx=\"9\" cy=\"9\" r=\"2\" /> <path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\" />", "lapiz": "<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" /> <path d=\"m15 5 4 4\" />", "mensaje": "<path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\" />", "telefono": "<path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z\" />", "basura": "<path d=\"M3 6h18\" /> <path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\" /> <path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\" /> <line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\" /> <line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\" />", "subir": "<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /> <polyline points=\"17 8 12 3 7 8\" /> <line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\" />", "idea": "<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\" /> <path d=\"M9 18h6\" /> <path d=\"M10 22h4\" />", "estrella": "<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\" />", "usuario": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\" /> <circle cx=\"12\" cy=\"7\" r=\"4\" />", "tienda": "<path d=\"m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7\" /> <path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\" /> <path d=\"M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4\" /> <path d=\"M2 7h20\" /> <path d=\"M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7\" />", "libreta": "<path d=\"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4\" /> <path d=\"M2 6h4\" /> <path d=\"M2 10h4\" /> <path d=\"M2 14h4\" /> <path d=\"M2 18h4\" /> <path d=\"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\" />", "bandeja": "<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\" /> <path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\" />", "buscar": "<circle cx=\"11\" cy=\"11\" r=\"8\" /> <path d=\"m21 21-4.3-4.3\" />", "cargando": "<path d=\"M21 12a9 9 0 1 1-6.219-8.56\" />", "listo": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"m9 12 2 2 4-4\" />"};
+function ic(n){return `<svg class="ico${n==='sig-chico'?' chico':''}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`}
+const iconos=h=>h.replace(/\[\[i:([a-z-]+)\]\]/g,(m,n)=>ic(n));
+
+const PALETTES=[['var(--c-azul-claro)','var(--c-azul)','var(--c-amarillo)'],['var(--c-rojo-claro)','var(--c-rojo)','var(--c-tinta)'],['var(--c-verde-claro)','var(--c-verde)','var(--c-amarillo)'],['var(--c-morado-claro)','var(--c-morado)','var(--c-blanco)'],['var(--c-amarillo-claro)','var(--c-tinta)','var(--c-rojo)'],['var(--c-menta)','var(--c-azul)','var(--c-tinta)']];
+const S={
+  view:1, prev:[], logged:false,
+  user:{nombre:'Ana Sofía',ap:'Pérez',am:'Canul',mat:'12345678',edad:'20',carrera:'Software',sem:'5',pass:'1234',foto:null},
+  users:[{mat:'12345678',pass:'1234'}],
+  biz:[
+    {id:1,nombre:'Dulces Sofi',tel:'+52 999 123 4567',pass:'1234',cat:'Postres y repostería',desc:'Postres caseros hechos por estudiantes.',redes:{Facebook:['https://facebook.com/dulcessofi'],Instagram:['https://instagram.com/dulcessofi'],Twitter:['']},foto:null}
+  ],
+  bizIdx:0, posts:[], sel:null, img:0, newPost:null, draft:null, form:{}, err:'', modal:null, menu:null, delBiz:null, photoFor:'user', camShot:false, toast:''
+};
+S.admin=false;S.adminMat=null;S.baja=null;S.backAdmin=29;
+S.roster=[{mat:'12345678',nombre:'Ana Sofía Pérez Canul',rol:'usuario'},{mat:'20230001',nombre:'Luis Chan',rol:'usuario'},{mat:'20230002',nombre:'Mariana Uc',rol:'usuario'},{mat:'20230003',nombre:'Carlos Pech',rol:'usuario'},{mat:'00000001',nombre:'Administrador maestro',rol:'maestro'},{mat:'00000002',nombre:'Laura Canché',rol:'hijo'}];
+S.users.push({mat:'20230001',pass:'1234'},{mat:'20230002',pass:'1234'},{mat:'20230003',pass:'1234'},{mat:'00000001',pass:'admin'},{mat:'00000002',pass:'admin'});
+S.log=[{que:'Usuario «Pedro Canul» (matrícula 20220045)',quien:'Administrador maestro',cuando:'12 de noviembre de 2026'},{que:'Comentario de «Luis Chan» en «Pay de limón»',quien:'Laura Canché',cuando:'18 de noviembre de 2026'},{que:'Publicación «Pulsera tejida» de «Hilos y más»',quien:'Administrador maestro',cuando:'20 de noviembre de 2026'}];
+const CARRERAS=['Enfermería','Educación','Software','Veterinaria','Contaduría'];
+const CATS=['Comida preparada','Postres y repostería','Bebidas','Dulces y botanas','Artesanías','Ropa y accesorios','Joyería y bisutería','Belleza y cuidado personal','Papelería e impresiones','Tecnología y accesorios','Plantas y decoración','Servicios académicos','Servicios de diseño y fotografía','Otros servicios','Otro'];
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fecha(d){return d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear()}
+let pid=1;
+function mkPost(n,price,desc,biz,pal,days){
+  const d=new Date();d.setDate(d.getDate()-days);
+  const ago=k=>{const x=new Date();x.setDate(x.getDate()-Math.max(1,Math.round(days*k)));return x};
+  return {id:pid++,nombre:n,precio:price,desc,bizId:biz,imgs:[pal,(pal+1)%6,(pal+2)%6],fecha:d,
+    ratings:{u1:5,u2:4,u3:5},rdates:{u1:ago(.5),u2:ago(.3),u3:ago(.05)},comments:[{id:1,who:'Luis Chan',r:5,txt:'Muy rico y llegó a tiempo.',f:ago(.45)},{id:2,who:'Mariana Uc',r:4,txt:'Buen precio, lo recomiendo.',f:ago(.12)}]};
+}
+S.posts=[mkPost('Brownies de chocolate',45,'Caja con 4 brownies caseros, receta de la abuela.',1,0,5),mkPost('Pay de limón',60,'Rebanada grande de pay de limón con galleta.',1,1,34),
+  mkPost('Galletas de avena',30,'Bolsa con 6 galletas de avena y pasas.',1,2,48),mkPost('Pulsera tejida',80,'Pulsera hecha a mano, colores a elegir.',2,3,62),
+  mkPost('Impresiones a color',5,'Impresión a color por hoja, tamaño carta.',3,4,75),mkPost('Asesoría de cálculo',120,'Una hora de asesoría en línea o presencial.',4,5,90)];
+S.posts.forEach(p=>p.tipo=(p.nombre==='Impresiones a color'||p.nombre==='Asesoría de cálculo')?'Servicio':'Producto');
+/* datos de demostración para los reportes: un registro por día con vistas (v) y clics en WhatsApp (w) */
+S.posts.forEach((p,i)=>{p.ev=[];const dias=Math.round((new Date()-p.fecha)/864e5);for(let d=0;d<=dias;d++){const f=new Date();f.setDate(f.getDate()-d);const v=((i*5+d*7)%9)+2+(d<14?2:0),w=Math.floor(v/3)+((d+i)%2);p.ev.push({f,v,w})}});
+S.biz.push({id:2,nombre:'Hilos y más',tel:'+52 999 222 3344',pass:'1234',cat:'Artesanías',desc:'Accesorios tejidos a mano.',redes:{Facebook:[''],Instagram:[''],Twitter:['']},foto:null,other:true},
+           {id:3,nombre:'Copias FMAT',tel:'+52 999 555 6677',pass:'1234',cat:'Papelería e impresiones',desc:'Impresiones y copias.',redes:{Facebook:[''],Instagram:[''],Twitter:['']},foto:null,other:true},
+           {id:4,nombre:'Tutorías UADY',tel:'+52 999 888 9900',pass:'1234',cat:'Servicios académicos',desc:'Asesorías por estudiantes.',redes:{Facebook:[''],Instagram:[''],Twitter:['']},foto:null,other:true});
+const monthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+const monthLabel=k=>{const [y,m]=k.split('-');const t=MESES[+m-1]+' de '+y;return t[0].toUpperCase()+t.slice(1)};
+const lastMonths=()=>{const a=[],n=new Date();for(let i=0;i<4;i++)a.push(monthKey(new Date(n.getFullYear(),n.getMonth()-i,1)));return a};
+const repMonth=()=>S.repMonth||monthKey(new Date());
+function pStats(p,mk){let v=0,w=0;(p.ev||[]).forEach(e=>{if(monthKey(e.f)===mk){v+=e.v;w+=e.w}});let rs=0,rn=0;Object.keys(p.ratings).forEach(k=>{const f=(p.rdates||{})[k];if(f&&monthKey(f)===mk){rs+=p.ratings[k];rn++}});return {v,w,cm:p.comments.filter(c=>c.f&&monthKey(c.f)===mk).length,r:rn?rs/rn:0,rs,rn}}
+function tStats(ps,mk){const t={v:0,w:0,cm:0,rs:0,rn:0};ps.forEach(p=>{const x=pStats(p,mk);t.v+=x.v;t.w+=x.w;t.cm+=x.cm;t.rs+=x.rs;t.rn+=x.rn});t.r=t.rn?t.rs/t.rn:0;return t}
+function track(id,t){const p=S.posts.find(x=>x.id===id);if(!p)return;p.ev=p.ev||[];const h=new Date().toDateString();let e=p.ev.find(x=>x.f.toDateString()===h);if(!e){e={f:new Date(),v:0,w:0};p.ev.push(e)}e[t]++}
+const csorted=p=>p.comments.slice().sort((a,b)=>S.csort==='antiguos'?(a.f||0)-(b.f||0):(b.f||0)-(a.f||0));
+const csel=()=>`<div class="csort">Ordenar por <select onchange="const t=document.getElementById('ctxt');S.ct=t?t.value:'';S.csort=this.value;render()"><option value="nuevos" ${S.csort!=='antiguos'?'selected':''}>Más recientes</option><option value="antiguos" ${S.csort==='antiguos'?'selected':''}>Más antiguos</option></select></div>`;
+const tipoChip=p=>`<span class="chip">${p.tipo||'Producto'}</span>`;
+const myBiz=()=>S.biz.filter(b=>!b.other);
+const curBiz=()=>S.biz.find(b=>b.id===S.bizIdx);
+const bizTel=id=>(S.biz.find(b=>b.id===id)||{tel:''}).tel;
+const bizName=id=>(S.biz.find(b=>b.id===id)||{nombre:'Negocio'}).nombre;
+
+/* ======================= PANTALLAS (por categoría) ======================= */
+const CATEG=[
+  ['A. Vistas de invitado',[[1,'Inicio de sesión'],[2,'Catálogo (invitado)'],[3,'Crear una cuenta'],[21,'Detalle de la publicación (invitado)']]],
+ ['B. Vistas de usuario',[[4,'Catálogo (sesión iniciada)'],[5,'Perfil del usuario'],[7,'Perfil del usuario con negocios'],[20,'Detalle de la publicación (usuario registrado)'],[24,'Editar información del usuario']]],
+ ['C. Vistas de negocio',[[6,'Añadir negocio'],[8,'Ingreso al negocio'],[9,'Panel inicial del negocio'],[10,'Agregar publicación'],[11,'Panel con nueva publicación'],[12,'Detalle de la publicación (negocio)'],[15,'Modificar publicación'],[16,'Configuración del negocio'],[17,'Modificar información del negocio'],[41,'Reportes del negocio: general'],[42,'Reportes del negocio: por publicación'],[43,'Reporte de una publicación']]],
+ ['D. Negocios (visibles para todos)',[[27,'Listado de negocios'],[28,'Perfil público del negocio']]],
+ ['E. Ventanas emergentes',[[13,'Modificar o eliminar'],[14,'Confirmar eliminación'],[18,'Elegir negocio a eliminar'],[19,'Confirmar eliminación del negocio'],[22,'Aviso de registro'],[23,'Salir del negocio'],[25,'Ver foto'],[26,'Tomar foto'],[35,'Confirmar baja'],[36,'Agregar categoría'],[40,'Editar categoría'],[37,'Agregar administrador']]]
+];
+const CATEG_ADM=['G. Vistas de administrador',[[29,'Panel: Publicaciones'],[30,'Panel: Negocios'],[31,'Panel: Usuarios'],[32,'Panel: Categorías'],[33,'Panel: Administradores'],[34,'Panel: Bitácora'],[38,'Detalle de la publicación (administrador)'],[39,'Perfil del negocio (administrador)'],[44,'Panel: Reportes']]];
+const NAMES={};CATEG.concat([CATEG_ADM]).forEach(c=>c[1].forEach(([n,t])=>NAMES[n]=t));
+const MODALS={13:12,14:12,18:7,19:7,22:21,23:16,25:24,26:24,35:29,36:32,37:33,40:32}; // ventana -> pantalla de fondo
+
+function side(){
+  let h='<h1>Prototipo navegable</h1><p class="s">Pulsa los botones dentro de la pantalla o salta a cualquier vista desde esta lista.</p>';
+  CATEG.forEach(([c,l])=>{h+='<h2>'+c+'</h2>';l.forEach(([n,t])=>h+=`<a href="#" class="${(S.modal||S.view)==n?'on':''}" onclick="jump(${n});return false">(${n}) ${t}</a>`)});
+  h+='<h2>F. Mensajes de alerta</h2><p class="s" style="margin:0">Aparecen dentro de cada pantalla al dejar campos vacíos o escribir datos incorrectos.</p>';
+  h+='<h2>'+CATEG_ADM[0]+'</h2>';CATEG_ADM[1].forEach(([n,t])=>h+=`<a href="#" class="${(S.modal||S.view)==n?'on':''}" onclick="jump(${n});return false">(${n}) ${t}</a>`);
+  h+='<h2>Estados</h2><a href="#" onclick="demoCarga();return false">Ver indicador de carga</a>';
+  h+='<div class="demo"><b>Datos de prueba</b><br>Matrícula: 12345678<br>Contraseña: 1234<br>Contraseña de negocios: 1234<br>Administrador: 00000001<br>Contraseña: admin</div>';
+  document.getElementById('side').innerHTML=h;
+}
+function jump(n){ // atajo del panel lateral: prepara el estado necesario
+  S.err='';S.menu=null;S.toast='';
+  if((n>=29&&n<=40)||n===44){S.admin=true;S.adminMat='00000001';S.logged=true}else{S.admin=false}
+  if(n===38){S.sel=S.sel||S.posts[0].id;S.backAdmin=29}
+  if(n===43){S.repFrom=S.repFrom||'biz';S.repPost=S.repPost||S.posts.find(p=>p.bizId===1).id}
+  if([41,42,43].includes(n)){S.logged=true;S.bizIdx=1}
+  if(n===39){S.adminBiz=S.adminBiz||S.biz[0].id}
+  if(n===40){S.catEdit=S.catEdit||CATS[0]}
+  if(n===35){S.baja={tipo:'publicación',id:S.posts[0].id}}
+  if([4,5,7,20,24,6,8,9,10,11,12,15,16,17,13,14,18,19,23,25,26].includes(n)) S.logged=true;
+  if([1,2,3,21,22].includes(n)) S.logged=false;
+  if([5].includes(n)) S._noBiz=true; else S._noBiz=false;
+  if([8,9,10,11,12,15,16,17,13,14,23].includes(n)) S.bizIdx=myBiz()[0]?myBiz()[0].id:1;
+  if([20,21,12,13,14,15,22].includes(n)&&!S.sel) S.sel=S.posts[0].id;
+  if(n===11&&!S.newPost) S.newPost=S.posts.find(p=>p.bizId===S.bizIdx).id;
+  if(n===19&&!S.delBiz) S.delBiz=myBiz()[0].id;
+  if(n===25||n===26) S.photoFor='user';
+  if(n===28){S.pubBiz=S.pubBiz||1;S.back28=27}
+  if(n===20||n===21) S.fromBiz=false;
+  if(MODALS[n]){S.view=MODALS[n];S.modal=n;} else {S.view=n;S.modal=null;}
+  S.draft=null; // cada salto desde el panel lateral empieza con formulario limpio
+  render();
+}
+function go(n){S.err='';S.errField='';S.menu=null;S.modal=null;S.camShot=false;S.view=n;if((n===20||n===21)&&S.sel&&!(S.logged&&myBiz().some(b=>b.id===curPost().bizId)))track(S.sel,'v');S.draft=(n===15||n===17||n===24||n===10||n===3||n===6)?S.draft:null;render();window.scrollTo(0,0)}
+function openM(n){S.err='';S.errField='';S.menu=null;S.modal=n;S.camShot=false;render()}
+function closeM(){S.err='';S.errField='';S.modal=null;render()}
+function demoCarga(){S.loading=true;render();setTimeout(()=>{S.loading=false;render()},1500)}
+function toast(t){S.toast=t;render();setTimeout(()=>{S.toast='';render()},1800)}
+
+/* ---------- piezas comunes ---------- */
+function art(p,i,cls=''){const c=PALETTES[p%6];return `<div class="art ${cls}" style="background:${c[0]}"><i style="width:46%;aspect-ratio:1;border-radius:50%;background:${c[1]};left:14%;top:30%"></i><i style="width:32%;aspect-ratio:1;border-radius:22%;background:${c[2]};left:48%;top:14%;transform:rotate(12deg)"></i>${i||''}</div>`}
+function avatar(foto,cls='',onclick=''){return `<button class="avatar ${cls}" ${onclick?`onclick="${onclick}"`:''} style="${onclick?'':'cursor:default'}">${foto?`<img src="${foto}">`:ICON_USER}</button>`}
+function stars(n,click='',big=false){let h=`<span class="stars ${click?'click':''}">`;for(let i=1;i<=5;i++)h+=`<span class="${i<=Math.round(n)?'':'off'}" ${click?`onclick="${click}(${i})"`:''}>[[i:estrella]]</span>`;return h+'</span>'}
+function avg(p){const v=Object.values(p.ratings);return v.length?(v.reduce((a,b)=>a+b,0)/v.length):0}
+function topCatalog(){
+  const neg=S.view===27||S.view===28;
+  return `<div class="top"><div class="marca"><div class="logo">[[i:libreta]]</div>Wissen</div><div class="tabs"><button class="${neg?'':'on'}" onclick="go(S.logged?4:2)">Catálogo</button><button class="${neg?'on':''}" onclick="go(27)">Negocios</button></div>
+  ${S.logged?`<div style="display:flex;gap:var(--esp-3);align-items:center">${S.admin?`<button class="btn purple sm" onclick="go(29)">Ver panel de administrador</button>`:''}<button class="lnk" onclick="goProfile()">Mi perfil</button>${avatar(S.user.foto,'',`goProfile()`).replace('<button class="avatar','<button title="Mi perfil" class="avatar')}</div>`:`<button class="btn sm" onclick="go(1)">Iniciar sesión</button>`}</div>`;
+}
+function goProfile(){go(myBiz().length&&!S._noBiz?7:5)}
+function topBiz(tab){const b=curBiz();return `<div class="top"><div style="display:flex;gap:var(--esp-3);align-items:center"><div class="avatar" style="width:34px;height:34px">${b.foto?`<img src="${b.foto}">`:ICON_SHOP}</div><b>${b.nombre}</b></div>
+  <div class="tabs"><button class="${tab===9?'on':''}" onclick="go(9)">Panel inicial</button><button class="${tab===16?'on':''}" onclick="go(16)">Configuración</button><button class="${tab===41||tab===42||tab===43?'on':''}" onclick="go(41)">Reportes</button></div><span style="width:80px"></span></div>`}
+function sel(label,id,val,opts){return `<label class="f" for="${id}">${label}</label><select class="in" id="${id}"${S.errField===id?' aria-invalid="true"':''}><option value="">Selecciona tu carrera</option>${opts.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select>`}
+function fld(label,id,val='',ph='',type='text',extra=''){return `<label class="f" for="${id}">${label}</label><input class="in" id="${id}"${S.errField===id?' aria-invalid="true"':''} type="${type}" value="${(val||'').toString().replace(/"/g,'&quot;')}" placeholder="${ph}" ${extra}>`}
+const v=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+const err=()=>S.err?`<div class="alert" role="alert">[[i:alerta]]<span>${S.err}</span></div>`:'';
+
+/* ======================= VISTAS ======================= */
+const V={};
+// (1) Inicio de sesión
+V[1]=()=>`<div class="wrap portada"><div class="libreta">
+ <div class="libreta-hoja"><div class="marca marca--tinta"><div class="logo logo--azul">[[i:libreta]]</div>Wissen</div>
+  <div class="notas"><span class="nota">Postres</span><span class="nota nota--menta">Copias</span><span class="nota nota--rosa">Asesorías</span></div>
+  <div><h1 class="resaltado portada-titulo">Bienvenido</h1><p class="portada-lema">Los productos de tu comunidad, en un solo lugar.</p></div></div>
+ <div class="libreta-espiral" aria-hidden="true">${'<span></span>'.repeat(9)}</div>
+ <div class="libreta-form">
+  <h2 class="titulo-seccion">Iniciar sesión</h2>
+  ${fld('Matrícula','lm','','Escribe tu matrícula')}${fld('Contraseña','lp','','••••••••','password')}${err()}
+  <div class="row acciones"><button class="btn" onclick="login()">Iniciar sesión</button><button class="btn light" onclick="S.logged=false;go(2)">Invitado</button></div>
+  <div class="separador"><p class="muted centro">¿No tienes cuenta? Regístrate como nuevo usuario.</p>
+  <button class="btn out ancho" onclick="S.back3=1;go(3)">Crear cuenta</button></div></div></div></div>`;
+function login(){const m=v('lm'),p=v('lp');if(S.users.some(u=>u.mat===m&&u.pass===p)){const r=S.roster.find(x=>x.mat===m);S.logged=true;S.admin=!!r&&r.rol!=='usuario';S.adminMat=S.admin?m:null;go(4)}else{S.err='La matrícula o la contraseña son incorrectas.';S.errField='lp';render()}}
+// (2)/(4) Catálogo
+function catalog(){return topCatalog()+`<div class="wrap"><h2 class="t">Catálogo</h2><p class="muted" style="margin:0 0 var(--esp-4)">Productos y servicios de los emprendedores de tu comunidad. Pulsa uno para ver su detalle.</p>${bizTools('Buscar publicación o negocio',true)}${S.posts.length?'':'<div class="vacio">[[i:bandeja]]<p>Aún no hay publicaciones. Cuando los negocios publiquen, aparecerán aquí.</p></div>'}<div class="grid3">${S.posts.map(p=>`<div class="pcard bf" ${postData(p)} onclick="S.sel=${p.id};S.img=0;S.fromBiz=false;go(${S.logged?20:21})">${art(p.imgs[0])}<div class="nm">${p.nombre}</div><div class="pr">$${p.precio}</div></div>`).join('')}</div>${bizEmpty('Ninguna publicación coincide con la búsqueda.')}</div>`}
+V[2]=catalog;V[4]=catalog;
+// (3) Crear una cuenta
+V[3]=()=>{const d=S.draft||{};return `<div class="wrap" style="display:grid;place-items:center"><div class="card" style="width:560px;max-width:100%">
+ <h2 class="t">Crea una cuenta</h2>
+ ${fld('Nombre(s)','cn',d.cn,'Tu nombre o nombres')}
+ <div class="row"><div>${fld('Apellido paterno','cap',d.cap,'Apellido paterno')}</div><div>${fld('Apellido materno','cam',d.cam,'Apellido materno')}</div></div>
+ <div class="row"><div class="ancho-doble">${fld('Matrícula','cmat',d.cmat,'00000000')}</div><div>${fld('Edad','ced',d.ced,'18','number')}</div></div>
+ <div class="row"><div class="ancho-doble">${sel('Carrera','ccar',d.ccar,CARRERAS)}</div><div>${fld('Semestre','csem',d.csem,'1','number')}</div></div>
+ ${fld('Contraseña','cpass',d.cpass,'••••••••','password')}${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn" onclick="register()">Crear cuenta</button><button class="btn outpink" onclick="go(S.back3===21?21:1)">Cancelar</button></div></div></div>`};
+function register(){
+  const f={cn:'Nombre(s)',cap:'Apellido paterno',cam:'Apellido materno',cmat:'Matrícula',ced:'Edad',ccar:'Carrera',csem:'Semestre',cpass:'Contraseña'};
+  const d={};Object.keys(f).forEach(k=>d[k]=v(k));S.draft=d;
+  const miss=Object.keys(f).find(k=>!d[k]);
+  if(miss){S.err=`Falta llenar el campo ${f[miss]}.`;S.errField=miss;return render()}
+  if(S.users.some(u=>u.mat===d.cmat)){S.err='Este usuario ya está registrado. Ingresa otra matrícula.';return render()}
+  S.users.push({mat:d.cmat,pass:d.cpass});S.roster.push({mat:d.cmat,nombre:d.cn+' '+d.cap,rol:'usuario'});Object.assign(S.user,{nombre:d.cn,ap:d.cap,am:d.cam,mat:d.cmat,edad:d.ced,carrera:d.ccar,sem:d.csem,pass:d.cpass});
+  S.biz=S.biz.filter(b=>b.other);S.logged=true;S.draft=null;go(4);
+}
+// detalle compartido (20, 21, 12)
+function gallery(p){return `<div class="galeria"><div class="galeria-foto">${art(p.imgs[S.img]||p.imgs[0],`<span class="counter">${S.img+1} / ${p.imgs.length}</span>`)}</div>
+ <div class="thumbs">${p.imgs.map((x,i)=>`<div onclick="S.img=${i};render()">${art(x,'','thumbs-a '+(i===S.img?'on':''))}</div>`).join('')}</div></div>`}
+function curPost(){return S.posts.find(p=>p.id===S.sel)||S.posts[0]}
+function detailPublic(guest){const p=curPost();const mine=p.ratings.me||0;
+ return `<div class="top"><button class="btn out sm" onclick="S.fromBiz?go(28):go(${guest?2:4})">[[i:atras]] Volver</button><div class="logo">[[i:libreta]]</div>${guest?`<button class="btn sm" onclick="go(1)">Iniciar sesión</button>`:avatar(S.user.foto,'','goProfile()')}</div>
+ <div class="wrap">${S.fromBiz?crumb(['Negocios',27],[bizName(p.bizId),28],[p.nombre]):crumb(['Catálogo',guest?2:4],[p.nombre])}<div class="hoja" style="display:grid;--cols:1fr 1fr;gap:var(--esp-6)">
+  <div class="thumbsWrap">${gallery(p)}</div>
+  <div><h2 class="t" style="font-size:var(--tam-pantalla)">${p.nombre}</h2><div style="display:flex;align-items:center;gap:var(--esp-3)"><span class="precio">$${p.precio}</span>${tipoChip(p)}</div>
+   <p class="muted">${p.desc}</p>
+   <div class="card" style="padding:var(--esp-3) var(--esp-4);margin-top:var(--esp-4)"><div class="info vbtn" onclick="S.pubBiz=${p.bizId};S.back28=${guest?21:20};S.fromBiz=false;go(28)"><div class="ic">${ICON_SHOP}</div><div style="flex:1"><div class="muted" style="font-size:var(--tam-etiqueta)">Vendido por</div><b>${bizName(p.bizId)}</b></div><span style="color:var(--c-azul);font-weight:var(--peso-fuerte);font-size:var(--tam-apoyo)">Ver negocio [[i:sig]]</span></div>
+   <div class="info" style="border-top:2px dashed var(--c-linea)"><div class="ic ic--amarillo">[[i:telefono]]</div><div><div class="muted" style="font-size:var(--tam-etiqueta)">Contacto del vendedor · pulsa para abrir WhatsApp</div><a class="wa" onclick="track(${p.id},'w')" href="https://wa.me/${bizTel(p.bizId).replace(/\D/g,'')}" target="_blank">${bizTel(p.bizId)}</a></div></div></div></div></div>
+  <div class="card" style="margin-top:var(--esp-5);display:grid;--cols:1fr 1.4fr;gap:var(--esp-6)">
+   <div><h3 style="margin:0 0 var(--esp-2)">Calificaciones</h3><div style="display:flex;gap:var(--esp-3);align-items:center"><b style="font-size:var(--tam-detalle)">${avg(p).toFixed(1)}</b><div>${stars(avg(p))}<div class="muted" style="font-size:var(--tam-etiqueta)">${Object.keys(p.ratings).length} calificaciones</div></div></div>
+    <p style="font-weight:var(--peso-medio);margin:var(--esp-4) 0 var(--esp-2)">Tu calificación ${guest?'[[i:candado]]':'<span class="muted" style="font-weight:var(--peso-normal);font-size:var(--tam-etiqueta)">(puedes cambiarla)</span>'}</p>
+    ${guest?`<div onclick="openM(22)" style="cursor:pointer">${stars(0)}</div>`:stars(mine,'rate')}
+    <div style="position:relative;margin-top:var(--esp-3)" ${guest?'onclick="openM(22)"':''}>
+     <textarea class="in" id="ctxt" maxlength="200" placeholder="Escribe tu comentario" ${guest?'disabled style="background:var(--c-campo);cursor:pointer;pointer-events:none"':'oninput="document.getElementById(\'cc\').textContent=this.value.length+\'/200\'"'}>${guest?'':(S.ct||'')}</textarea>
+     <span id="cc" class="muted" style="position:absolute;right:10px;bottom:10px;font-size:var(--tam-etiqueta)">${(S.ct||'').length}/200</span></div>
+    ${err()}
+    <div style="display:flex;align-items:center;gap:var(--esp-3);margin-top:var(--esp-3)">${guest?`<button class="btn light" onclick="openM(22)">[[i:candado]] Comentar</button><span class="muted" style="font-size:var(--tam-apoyo)">Regístrate para calificar y comentar</span>`:`<button class="btn" onclick="comment()">Comentar</button>`}</div></div>
+   <div><div style="display:flex;justify-content:space-between;align-items:center;gap:var(--esp-3)"><h3 style="margin:0 0 var(--esp-1)">Comentarios <span class="muted" style="font-size:var(--tam-apoyo)">(${p.comments.length})</span></h3>${csel()}</div>${csorted(p).map(c=>commentRow(p,c,!guest)).join('')}</div></div></div>`}
+function commentRow(p,c,canEdit,admin){const mine=c.who==='me';
+ if(S.editing===c.id) return `<div class="cmt"><div style="flex:1"><textarea class="in" id="etxt" maxlength="200">${c.txt}</textarea><div style="display:flex;gap:var(--esp-2);margin-top:var(--esp-2)"><button class="btn green sm" onclick="saveEdit(${c.id})">Guardar</button><button class="btn outpink sm" onclick="S.editing=null;render()">Cancelar</button></div></div></div>`;
+ return `<div class="cmt"><div class="avatar">${ICON_USER}</div><div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:center"><span><b>${mine?'Tu comentario':c.who}</b> ${stars(c.r)} <span class="muted" style="font-size:var(--tam-etiqueta)">· ${c.f?fecha(c.f):''}</span></span>
+ ${mine&&canEdit?`<span><button class="lnk" style="color:var(--c-azul)" onclick="S.editing=${c.id};render()">Editar</button><button class="lnk" style="color:var(--c-rojo)" onclick="delComment(${c.id})">Eliminar</button></span>`:''}${admin?`<button class="lnk" style="color:var(--c-rojo)" onclick="askBaja('comentario',${c.id})">Eliminar</button>`:''}</div><div class="muted" style="font-size:var(--tam-apoyo);margin-top:var(--esp-1)">${c.txt}</div></div></div>`}
+function rate(n){const p=curPost();p.ratings.me=n;(p.rdates=p.rdates||{}).me=new Date();render()}
+function comment(){const t=v('ctxt');if(!t){S.err='Escribe un comentario antes de publicarlo.';return render()}S.err='';const p=curPost();p.comments.unshift({id:Date.now(),who:'me',r:p.ratings.me||0,txt:t,f:new Date()});S.ct='';render()}
+function saveEdit(id){const t=v('etxt');if(!t)return;curPost().comments.find(c=>c.id===id).txt=t;S.editing=null;render()}
+function delComment(id){const p=curPost();p.comments=p.comments.filter(c=>c.id!==id);render()}
+V[20]=()=>detailPublic(false);
+V[21]=()=>detailPublic(true);
+// (5)/(7) Perfil
+function profile(withBiz){const u=S.user;const bs=myBiz();
+ return `<div class="top"><div class="logo" onclick="go(4)" style="cursor:pointer" title="Ir al catálogo">[[i:libreta]]</div><b>Mi perfil</b>${avatar(u.foto)}</div>
+ <div class="wrap"><div style="display:grid;--cols:1fr 1.2fr;gap:var(--esp-5)">
+  <div class="card" style="text-align:center">${avatar(u.foto,'big').replace('<button','<button style="margin:auto;cursor:default"')}
+   <h2 style="margin:var(--esp-4) 0 var(--esp-1)">${u.nombre} ${u.ap} ${u.am}</h2>
+   <div class="muted" style="line-height:1.9;font-size:var(--tam-apoyo)">Matrícula: ${u.mat}<br>Semestre: ${u.sem}<br>Carrera: ${u.carrera}</div>
+   <div class="stack" style="margin-top:var(--esp-4)"><button class="btn lgreen" onclick="S.back24=${withBiz?7:5};go(24)">Editar información</button><button class="btn outpink" onclick="S.logged=false;S.admin=false;go(1)">[[i:salir]] Cerrar sesión</button></div></div>
+  <div class="card" style="position:relative"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Negocios</h3>
+   ${withBiz?`<button class="btn out sm" style="padding:var(--esp-2) var(--esp-3)" onclick="S.menu=S.menu?null:'biz';render()">[[i:opciones]]</button>`:''}</div>
+   ${S.menu==='biz'?`<div class="menu" style="right:24px;top:62px"><button class="del" onclick="S.delBiz=null;openM(18)">[[i:basura]] Eliminar un negocio</button></div>`:''}
+   ${withBiz?`<div style="margin-top:var(--esp-4)">${bs.map(b=>`<div class="bizrow" onclick="S.bizIdx=${b.id};go(8)"><div class="avatar" style="width:36px;height:36px">${b.foto?`<img src="${b.foto}">`:ICON_SHOP}</div><b style="flex:1">${b.nombre}</b><span class="muted">[[i:sig]]</span></div>`).join('')}
+    <div class="bizrow add" onclick="S.back6=7;go(6)">[[i:mas]] Añadir un negocio</div></div>`
+   :`<div class="vacio">[[i:tienda]]<p>Todavía no tienes negocios.<br>Añade el primero para empezar a vender.</p><button class="btn" onclick="S.back6=5;go(6)">Añadir un negocio</button></div>`}</div></div></div>`}
+V[5]=()=>profile(false);
+V[7]=()=>profile(true);
+// (24) Editar información del usuario
+V[24]=()=>{const u=S.user,d=S.draft||{cn:u.nombre,cap:u.ap,cam:u.am,cmat:u.mat,ced:u.edad,ccar:u.carrera,csem:u.sem};S.draft=d;
+ return `<div class="wrap" style="display:grid;place-items:center"><div class="card" style="width:600px;max-width:100%;position:relative">
+ <div style="display:flex;gap:var(--esp-4);align-items:center;position:relative">${photoBtn(u.foto,'user')}<h2 class="t" style="margin:0">Editar información</h2></div>
+ ${S.menu==='photo'?photoMenu():''}
+ ${fld('Nombre(s)','cn',d.cn)}<div class="row"><div>${fld('Apellido paterno','cap',d.cap)}</div><div>${fld('Apellido materno','cam',d.cam)}</div></div>
+ <div class="row"><div class="ancho-doble">${fld('Matrícula','cmat',d.cmat)}</div><div>${fld('Edad','ced',d.ced,'','number')}</div></div>
+ <div class="row"><div class="ancho-doble">${sel('Carrera','ccar',d.ccar,CARRERAS)}</div><div>${fld('Semestre','csem',d.csem,'','number')}</div></div>${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="saveUser()">Aceptar</button><button class="btn outpink" onclick="S.draft=null;go(S.back24||7)">Cancelar</button></div></div></div>`};
+function keepDraft(ids){if(!S.draft)S.draft={};ids.forEach(k=>{const e=document.getElementById(k);if(e)S.draft[k]=e.value})}
+function saveUser(){const f={cn:'Nombre(s)',cap:'Apellido paterno',cam:'Apellido materno',cmat:'Matrícula',ced:'Edad',ccar:'Carrera',csem:'Semestre'};
+ keepDraft(Object.keys(f));const d=S.draft;const miss=Object.keys(f).find(k=>!d[k].trim());
+ if(miss){S.err=`Falta llenar el campo ${f[miss]}.`;S.errField=miss;return render()}
+ if(d.cmat!==S.user.mat&&S.users.some(u=>u.mat===d.cmat)){S.err='Este usuario ya está registrado. Ingresa otra matrícula.';return render()}
+ const me=S.users.find(u=>u.mat===S.user.mat);if(me)me.mat=d.cmat;
+ Object.assign(S.user,{nombre:d.cn,ap:d.cap,am:d.cam,mat:d.cmat,edad:d.ced,carrera:d.ccar,sem:d.csem});S.draft=null;go(S.back24||7)}
+// menú de foto (usuario y negocio)
+function photoBtn(foto,who){return `<div style="position:relative">${avatar(foto,'big',`S.photoFor='${who}';keepDraft(DRAFT_IDS);S.menu=S.menu==='photo'?null:'photo';render()`).replace('class="avatar big"','class="avatar big" style="width:76px;height:76px"')}<span style="position:absolute;right:-2px;bottom:-2px;background:var(--c-tinta);color:var(--c-blanco);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:var(--tam-etiqueta);pointer-events:none">[[i:camara]]</span></div>`}
+const DRAFT_IDS=['cn','cap','cam','cmat','ced','ccar','csem','bn','bt','bcat','bdesc'];
+function photoMenu(){return `<div class="menu" style="left:24px;top:110px"><button onclick="openM(25)">[[i:ver]] Ver foto</button><button onclick="openM(26)">[[i:camara]] Tomar foto</button>
+ <button onclick="document.getElementById('upl').click()">[[i:subir]] Subir foto</button><button class="del" onclick="setPhoto(null)">[[i:basura]] Quitar foto</button></div><input type="file" id="upl" accept="image/*" hidden onchange="upload(this)">`}
+function setPhoto(src){if(S.photoFor==='user')S.user.foto=src;else curBiz().foto=src;S.menu=null;S.modal=null;render()}
+function upload(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>setPhoto(e.target.result);r.readAsDataURL(f)}
+function curPhoto(){return S.photoFor==='user'?S.user.foto:curBiz().foto}
+// (6) Añadir negocio
+V[6]=()=>{const d=S.draft||{};return `<div class="wrap" style="display:grid;place-items:center"><div class="card" style="width:560px;max-width:100%">
+ <h2 class="t">Añadir negocio</h2>${fld('Nombre del negocio','bn',d.bn,'Nombre de tu negocio')}${fld('Teléfono','bt',d.bt,'+52 000 000 0000')}${fld('Contraseña','bp',d.bp,'••••••••','password')}
+ <label class="f">Categoría</label><select class="in" id="bcat"><option value="">Selecciona una categoría</option>${CATS.map(c=>`<option ${d.bcat===c?'selected':''}>${c}</option>`).join('')}</select>${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn" onclick="addBiz()">Añadir negocio</button><button class="btn outpink" onclick="S.draft=null;go(S.back6||5)">Cancelar</button></div></div></div>`};
+function addBiz(){const d={bn:v('bn'),bt:v('bt'),bp:v('bp'),bcat:v('bcat')};S.draft=d;
+ if(!d.bn||!d.bt||!d.bp){S.errField=!d.bn?'bn':!d.bt?'bt':'bp';S.err=`Falta llenar el campo ${!d.bn?'Nombre del negocio':!d.bt?'Teléfono':'Contraseña'}.`;return render()}
+ if(!d.bcat){S.err='Elige la categoría de tu negocio.';return render()}
+ S.biz.push({id:Date.now(),nombre:d.bn,tel:d.bt,pass:d.bp,cat:d.bcat,desc:'',redes:{Facebook:[''],Instagram:[''],Twitter:['']},foto:null});S._noBiz=false;S.draft=null;go(7)}
+// (8) Ingreso al negocio
+V[8]=()=>{const b=curBiz();return `<div class="wrap" style="display:grid;place-items:center;min-height:680px"><div class="card" style="width:420px;max-width:100%;text-align:center">
+ <div class="avatar" style="width:70px;height:70px;margin:auto">${b.foto?`<img src="${b.foto}">`:ICON_SHOP.replace('width="20" height="20"','width="32" height="32"')}</div>
+ <h2 style="margin:var(--esp-3) 0 var(--esp-1)">${b.nombre}</h2><p class="muted" style="margin:0 0 var(--esp-2)">Escribe la contraseña del negocio para entrar.</p>
+ <div style="text-align:left">${fld('Contraseña','ip','','••••••••','password')}</div>${err()}
+ <div class="stack" style="margin-top:var(--esp-4)"><button class="btn green" onclick="enterBiz()">Ingresar</button><button class="btn outpink" onclick="go(7)">Cancelar</button></div></div></div>`};
+function enterBiz(){if(v('ip')===curBiz().pass){S.newPost=null;go(9)}else{S.err='Contraseña incorrecta. Inténtalo de nuevo.';S.errField='ip';render()}}
+// (9)/(11) Panel inicial
+function panel(){const ps=S.posts.filter(p=>p.bizId===S.bizIdx).sort((a,b)=>b.fecha-a.fecha);
+ return topBiz(9)+`<div class="wrap"><div style="display:flex;flex-wrap:wrap;gap:var(--esp-3);justify-content:space-between;align-items:center;margin-bottom:var(--esp-4)"><div><h2 class="t" style="margin:0">Publicaciones</h2><p class="muted" style="margin:var(--esp-1) 0 0">Lo que ofreces en este negocio. Pulsa una para verla, modificarla o eliminarla.</p></div><button class="btn" onclick="S.draft=null;go(10)">[[i:mas]] Agregar publicación</button></div>
+ ${ps.length?`<div class="grid3">${ps.map(p=>`<div class="pcard ${S.view===11&&p.id===S.newPost?'new':''}" onclick="S.sel=${p.id};S.img=0;go(12)">${S.view===11&&p.id===S.newPost?'<span class="badge">Nueva</span>':''}${art(p.imgs[0])}<div class="nm">${p.nombre}</div><div class="pr">$${p.precio}</div></div>`).join('')}</div>`
+ :`<div class="vacio">[[i:bandeja]]<p>Todavía no hay publicaciones. Pulsa «Agregar publicación».</p></div>`}</div>`}
+V[9]=panel;V[11]=panel;
+// (12) Detalle de la publicación (negocio) — con fecha de publicación
+V[12]=()=>{const p=curPost();return topBiz(9)+`<div class="wrap"><div class="hoja"><div style="display:grid;--cols:1fr 1.1fr;gap:var(--esp-6)">
+ <div>${gallery(p)}</div>
+ <div><h2 class="t" style="font-size:var(--tam-pantalla)">${p.nombre}</h2><div style="display:flex;align-items:center;gap:var(--esp-3)"><span class="precio">$${p.precio}</span>${tipoChip(p)}</div>
+  <div class="muted" style="font-size:var(--tam-apoyo);margin-top:var(--esp-1)">[[i:calendario]] Publicado el ${fecha(p.fecha)}</div>
+  <p style="font-weight:var(--peso-fuerte);margin:var(--esp-4) 0 var(--esp-1)">Descripción</p><p class="muted" style="margin:0">${p.desc}</p>
+  <p style="font-weight:var(--peso-fuerte);margin:var(--esp-4) 0 var(--esp-1)">Contacto del vendedor</p><a class="wa" href="https://wa.me/${bizTel(p.bizId).replace(/\D/g,'')}" target="_blank">[[i:telefono]] ${bizTel(p.bizId)}</a> <span class="muted" style="font-size:var(--tam-etiqueta)">Pulsa para abrir WhatsApp · es el teléfono del negocio</span>
+  <div class="row" style="margin-top:var(--esp-5)"><button class="btn purple" onclick="openM(13)">Opciones</button><button class="btn outpink" onclick="go(9)">Salir</button></div></div></div></div>
+ <div class="card" style="margin-top:var(--esp-4)"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Calificaciones y comentarios de esta publicación</h3><span><b style="font-size:var(--tam-seccion)">${avg(p).toFixed(1)}</b> ${stars(avg(p))} <span class="muted" style="font-size:var(--tam-etiqueta)">${Object.keys(p.ratings).length} calificaciones</span></span></div>
+ <div style="display:flex;justify-content:flex-end;margin-top:var(--esp-2)">${csel()}</div>${csorted(p).map(c=>commentRow(p,c,false)).join('')}</div></div>`};
+// (10)/(15) Agregar y Modificar publicación
+function postForm(edit){const p=edit?curPost():null;
+ if(!S.draft)S.draft=edit?{nombre:p.nombre,precio:p.precio,desc:p.desc,tipo:p.tipo||'Producto',imgs:[...p.imgs],main:0}:{nombre:'',precio:'',desc:'',tipo:'Producto',imgs:[],main:0};
+ const d=S.draft;
+ return topBiz(9)+`<div class="wrap"><div class="card"><h2 class="t">${edit?'Modificar publicación':'Agregar publicación'}</h2>
+ <div style="display:grid;--cols:1fr 1fr;gap:var(--esp-5);margin-top:var(--esp-3)">
+ <div>${d.imgs.length?`<div style="position:relative">${art(d.imgs[d.main]||d.imgs[0],`<span class="counter">${d.main+1} / ${d.imgs.length}</span>`)}</div>`:`<div class="drop" onclick="addImg()"><div><div style="font-size:var(--tam-pantalla)">[[i:imagen]]</div><b style="color:var(--c-azul)">Añadir imágenes</b><br><span style="font-size:var(--tam-etiqueta)">Hasta 10 imágenes, de cualquier tamaño</span></div></div>`}
+  <div class="slots">${d.imgs.map((x,i)=>`<div class="slot" style="border:${i===d.main?'2.5px solid var(--c-azul)':'1.5px solid var(--c-linea)'}" onclick="keepPost();S.draft.main=${i};render()">${art(x)}<span class="x" onclick="event.stopPropagation();rmImg(${i})">[[i:cerrar]]</span></div>`).join('')}<div class="slot" onclick="addImg()">[[i:mas]]</div></div>
+  <p class="muted" style="font-size:var(--tam-etiqueta)">La primera imagen será la principal. ${d.imgs.length}/10 imágenes.</p></div>
+ <div>${fld('Nombre','pn',d.nombre,'Nombre del producto')}${fld('Precio','pp',d.precio,'$ 0','number')}<label class="f">Tipo</label><div class="row">${['Producto','Servicio'].map(t=>`<div class="radio blue ${d.tipo===t?'on':''}" style="margin:0" onclick="keepPost();S.draft.tipo='${t}';render()"><span class="dot"></span><b>${t}</b></div>`).join('')}</div><div class="info" style="margin-top:var(--esp-2);padding:var(--esp-3) var(--esp-3);background:var(--c-campo);border-radius:var(--rad-control)"><div class="ic" style="background:var(--c-blanco)">[[i:telefono]]</div><div style="font-size:var(--tam-apoyo)"><div class="muted">El contacto se toma del teléfono del negocio</div><b>${curBiz().tel}</b></div></div>
+  <label class="f">Descripción</label><textarea class="in" id="pd" placeholder="Describe tu producto">${d.desc}</textarea>${err()}
+  <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="savePost(${edit})">Aceptar</button><button class="btn outpink" onclick="S.draft=null;go(9)">Cancelar</button></div></div></div></div></div>`}
+function keepPost(){const d=S.draft;['pn','pp','pd'].forEach((k,i)=>{const e=document.getElementById(k);if(e)d[['nombre','precio','desc'][i]]=e.value})}
+function addImg(){keepPost();if(S.draft.imgs.length>=10){S.err='Solo puedes subir hasta 10 imágenes.';return render()}S.err='';S.draft.imgs.push(Math.floor(Math.random()*6));render()}
+function rmImg(i){keepPost();S.draft.imgs.splice(i,1);S.draft.main=0;render()}
+function savePost(edit){keepPost();const d=S.draft;
+ if(!d.nombre.trim()||!String(d.precio).trim()||!d.desc.trim()||!d.imgs.length){S.err='Completa todos los campos y agrega al menos una imagen.';return render()}
+ if(edit){Object.assign(curPost(),{nombre:d.nombre,precio:d.precio,desc:d.desc,tipo:d.tipo,imgs:d.imgs});S.draft=null;go(9)}
+ else{const p={id:pid++,nombre:d.nombre,precio:d.precio,desc:d.desc,tipo:d.tipo,imgs:d.imgs,bizId:S.bizIdx,fecha:new Date(),ratings:{},comments:[]};S.posts.unshift(p);S.newPost=p.id;S.draft=null;go(11)}}
+V[10]=()=>postForm(false);V[15]=()=>postForm(true);
+// (16) Configuración del negocio
+V[16]=()=>{const b=curBiz(),u=S.user;const nets=[['Facebook','var(--c-azul-claro)'],['Instagram','var(--c-rojo-claro)'],['Twitter','var(--c-verde-claro)']];
+ return topBiz(16)+`<div class="wrap"><div class="card"><div style="display:flex;gap:var(--esp-5);align-items:center">${avatar(b.foto,'big')}
+ <div><h2 class="t" style="font-size:var(--tam-pantalla)">${b.nombre}</h2><div class="muted" style="margin-bottom:var(--esp-2)">Dueño: ${u.nombre} ${u.ap} ${u.am} · [[i:telefono]] ${b.tel}</div><span class="chip">[[i:etiqueta]] ${b.cat}</span></div></div>
+ <hr style="border:0;border-top:1px solid var(--c-linea);margin:var(--esp-5) 0"><div style="display:grid;--cols:1.4fr 1fr;gap:var(--esp-5)">
+ <div><h3 style="margin:0 0 var(--esp-2)">Descripción</h3><p class="muted" style="margin:0">${b.desc||'Aquí aparece la descripción de tu negocio para que tus compradores sepan qué ofreces.'}</p></div>
+ <div><h3 style="margin:0 0 var(--esp-3)">Redes sociales</h3><div style="display:flex;gap:var(--esp-4)">${nets.map(([n,c])=>{const l=b.redes[n].filter(x=>x);return `<div style="text-align:center"><button class="social" style="background:${c};opacity:${l.length?1:.45}" onclick="${l.length?`window.open('${l[0]}','_blank')`:''}" title="${l.length?l.length+' enlace(s)':'Sin enlace'}">[[i:enlace]]</button><div class="muted" style="font-size:var(--tam-etiqueta);margin-top:var(--esp-1)">${n}</div></div>`}).join('')}</div></div></div>
+ <hr style="border:0;border-top:1px solid var(--c-linea);margin:var(--esp-5) 0"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>Salir del negocio</b><div class="muted" style="font-size:var(--tam-apoyo)">Vuelves a tu cuenta de usuario.</div></div><button class="btn outpink" onclick="openM(23)">[[i:salir]] Salir del negocio</button></div>
+ <div style="text-align:right;margin-top:var(--esp-5)"><button class="btn" onclick="S.draft=null;go(17)">Modificar</button></div></div></div>`};
+// (17) Modificar información del negocio
+V[17]=()=>{const b=curBiz();if(!S.draft)S.draft={bn:b.nombre,bt:b.tel,bcat:b.cat,bdesc:b.desc,redes:JSON.parse(JSON.stringify(b.redes))};const d=S.draft;
+ return topBiz(16)+`<div class="wrap"><div class="card" style="position:relative"><div style="display:flex;gap:var(--esp-4);align-items:center">${photoBtn(b.foto,'biz')}<h2 class="t" style="margin:0">Modificar información del negocio</h2></div>
+ ${S.menu==='photo'?photoMenu():''}
+ <div style="display:grid;--cols:1fr 1fr;gap:var(--esp-5)"><div>${fld('Nombre del negocio','bn',d.bn)}${fld('Teléfono','bt',d.bt)}
+  <label class="f">Categoría</label><select class="in" id="bcat">${CATS.map(c=>`<option ${d.bcat===c?'selected':''}>${c}</option>`).join('')}</select>
+  <label class="f">Descripción</label><textarea class="in" id="bdesc">${d.bdesc||''}</textarea></div>
+ <div><label class="f">Redes sociales <span class="muted" style="font-weight:var(--peso-normal)">(hasta 3 enlaces por red)</span></label>
+  ${['Facebook','Instagram','Twitter'].map(n=>`<div class="netblock"><div style="display:flex;justify-content:space-between;font-size:var(--tam-apoyo)"><b>${n}</b><span class="muted">${d.redes[n].length} / 3 enlaces</span></div>
+   ${d.redes[n].map((l,i)=>`<input class="in" data-net="${n}" data-i="${i}" value="${l}" placeholder="https://enlace-de-${n.toLowerCase()}">`).join('')}
+   <button class="lnk" style="color:var(--c-azul);margin-top:var(--esp-2)" onclick="addLink('${n}')">[[i:mas]] Agregar otro enlace</button></div>`).join('')}${err()}</div></div>
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="saveBiz()">Aceptar</button><button class="btn outpink" onclick="S.draft=null;go(16)">Cancelar</button></div></div></div>`};
+function keepBiz(){const d=S.draft;['bn','bt','bcat','bdesc'].forEach(k=>{const e=document.getElementById(k);if(e)d[k]=e.value});document.querySelectorAll('[data-net]').forEach(e=>d.redes[e.dataset.net][+e.dataset.i]=e.value.trim())}
+function addLink(n){keepBiz();if(S.draft.redes[n].length>=3){S.err='Solo puedes agregar hasta 3 enlaces por red social.';return render()}S.err='';S.draft.redes[n].push('');render()}
+function saveBiz(){keepBiz();const d=S.draft;if(!d.bn.trim()||!d.bt.trim()){S.err=`Falta llenar el campo ${!d.bn.trim()?'Nombre del negocio':'Teléfono'}.`;return render()}
+ Object.assign(curBiz(),{nombre:d.bn,tel:d.bt,cat:d.bcat,desc:d.bdesc,redes:d.redes});S.draft=null;go(16)}
+
+// (27) Listado de negocios  /  (28) Perfil público del negocio  [NUEVAS]
+function bizPic(b,i,cls){return `<div class="bpic ${cls}" style="background:${PALETTES[i%6][0]}">${b.foto?`<img src="${b.foto}">`:ICON_SHOP}</div>`}
+
+/* buscador con filtro por categoría (y Producto/Servicio en el catálogo) */
+const BST={}; // filtros recordados por pantalla
+const bst=()=>BST[S.view]||(BST[S.view]={q:'',c:'',f:'todos'});
+const bizTipos=b=>[...new Set(S.posts.filter(p=>p.bizId===b.id).map(p=>(p.tipo||'Producto').toLowerCase()))].join(' ');
+const bizData=b=>`data-q="${(b.nombre+' '+b.cat).toLowerCase()}" data-t="${bizTipos(b)}" data-c="${b.cat}"`;
+const postData=p=>{const b=S.biz.find(x=>x.id===p.bizId)||{nombre:'',cat:''};return `data-q="${(p.nombre+' '+b.nombre+' '+b.cat).toLowerCase()}" data-t="${(p.tipo||'Producto').toLowerCase()}" data-c="${b.cat}"`};
+function bizApply(){const st=bst(),qi=document.getElementById('bq'),ci=document.getElementById('bc');if(!qi)return;st.q=qi.value;st.c=ci.value;const q=st.q.toLowerCase();let n=0,tot=0;
+ document.querySelectorAll('.bf').forEach(r=>{tot++;const ok=r.dataset.q.includes(q)&&(st.f==='todos'||r.dataset.t.split(' ').includes(st.f))&&(!st.c||r.dataset.c===st.c);r.style.display=ok?'':'none';if(ok)n++});
+ document.querySelectorAll('.bfbar .chips button').forEach(b=>b.classList.toggle('on',b.dataset.f===st.f));
+ const act=!!(st.q||st.c||st.f!=='todos');
+ const cn=document.getElementById('bcount');if(cn)cn.textContent=act?`${n} de ${tot} ${n===1?'resultado':'resultados'}`:`${tot} en total`;
+ const cl=document.getElementById('bclear');if(cl)cl.style.display=act?'':'none';
+ const e=document.getElementById('bempty');if(e)e.style.display=n?'none':''}
+function bizClear(){const st=bst();st.q='';st.c='';st.f='todos';document.getElementById('bq').value='';document.getElementById('bc').value='';bizApply()}
+function bizTipo(k){bst().f=k;bizApply()}
+const bizTools=(ph,tipo)=>{const st=bst();return `<div class="bfbar"><input id="bq" class="adm-search" placeholder="${ph}" style="min-width:260px" value="${st.q}" oninput="bizApply()">
+ <select id="bc" class="adm-search" style="min-width:190px" onchange="bizApply()"><option value="">Todas las categorías</option>${CATS.map(c=>`<option ${c===st.c?'selected':''}>${c}</option>`).join('')}</select>
+ ${tipo?`<div class="chips">${[['todos','Todos'],['producto','Productos'],['servicio','Servicios']].map(([k,t])=>`<button data-f="${k}" class="${k===st.f?'on':''}" onclick="bizTipo('${k}')">${t}</button>`).join('')}</div>`:''}
+ <span id="bcount" class="muted" style="font-size:var(--tam-apoyo)"></span><button id="bclear" class="lnk" style="display:none;color:var(--c-rojo);font-weight:var(--peso-fuerte)" onclick="bizClear()">[[i:cerrar]] Limpiar filtros</button></div>`};
+const bizEmpty=t=>`<div id="bempty" class="vacio" style="display:none">[[i:buscar]]<p>${t}</p></div>`;
+V[27]=()=>topCatalog()+`<div class="wrap"><h2 class="t">Negocios</h2><p class="muted" style="margin:0 0 var(--esp-4)">Conoce a los emprendedores de tu comunidad.</p>${bizTools('Buscar negocio')}
+ <div class="grid4">${S.biz.map((b,i)=>`<div class="bcard bf" ${bizData(b)} onclick="S.pubBiz=${b.id};S.back28=27;go(28)">${bizPic(b,i,'')}<div class="bn">${b.nombre}</div><div class="bc">${b.cat}</div></div>`).join('')}</div>${bizEmpty('Ningún negocio coincide con la búsqueda.')}</div>`;
+function credencial(b,i,links){return `<div class="credencial"><div class="credencial-franja">CREDENCIAL DE NEGOCIO<i></i></div><div class="credencial-cuerpo">${bizPic(b,i,'big')}
+  <div class="credencial-datos"><h2 class="t">${b.nombre}</h2><span class="chip chip--menta">[[i:etiqueta]] ${b.cat}</span>
+   <p class="muted">${b.desc||'Este negocio aún no tiene descripción.'}</p>
+   <div class="credencial-contacto" style="display:grid;--cols:1fr 1fr;gap:var(--esp-3)">
+    <div><div class="lbl">Teléfono · WhatsApp</div><a class="wa" href="https://wa.me/${b.tel.replace(/\D/g,'')}" target="_blank">[[i:telefono]] ${b.tel}</a></div>
+    <div><div class="lbl">Redes sociales</div><div class="fila-chips">${links.length?links.map(([n,l])=>`<a class="chip" href="${l}" target="_blank">[[i:enlace]] ${n}</a>`).join(''):'<span class="muted">Sin redes sociales</span>'}</div></div></div></div></div></div>`}
+V[28]=()=>{const b=S.biz.find(x=>x.id===S.pubBiz)||S.biz[0];const i=S.biz.indexOf(b);
+ const ps=S.posts.filter(p=>p.bizId===b.id).sort((x,y)=>y.fecha-x.fecha);
+ const links=[];Object.entries(b.redes).forEach(([n,ls])=>ls.filter(x=>x).forEach(l=>links.push([n,l])));
+ return topCatalog()+`<div class="wrap"><div class="barra-volver"><button class="btn out sm" onclick="go(S.back28||27)">[[i:atras]] Volver</button>${crumb(['Negocios',27],[b.nombre])}</div>
+ ${credencial(b,i,links)}
+ <h3 style="margin:var(--esp-5) 0 var(--esp-3)">Publicaciones <span class="muted" style="font-size:var(--tam-apoyo)">(${ps.length})</span></h3>
+ ${ps.length?`<div class="grid3">${ps.map(p=>`<div class="pcard" onclick="S.sel=${p.id};S.img=0;S.fromBiz=true;go(${S.logged?20:21})">${art(p.imgs[0])}<div class="nm">${p.nombre}</div><div class="pr">$${p.precio}</div></div>`).join('')}</div>`:`<div class="vacio">[[i:bandeja]]<p>Este negocio todavía no tiene publicaciones.</p></div>`}</div>`};
+
+/* ======================= VENTANAS EMERGENTES ======================= */
+const M={};
+M[13]=()=>`<div class="modal"><h3 style="margin-top:0">¿Quieres modificar o eliminar?</h3><p>Elige qué hacer con esta publicación.</p>
+ <div class="row"><button class="btn purple" onclick="S.draft=null;go(15)">Modificar</button><button class="btn pink" onclick="openM(14)">Eliminar</button></div>
+ <button class="btn outpink" style="width:100%;margin-top:var(--esp-3)" onclick="closeM()">Cancelar</button></div>`;
+M[14]=()=>`<div class="modal"><div class="mic" style="background:var(--c-rojo-claro);color:var(--c-rojo)">[[i:alerta]]</div><h3>¿Seguro que quieres eliminar esta publicación?</h3><p>Esta acción es permanente y no se puede deshacer.</p>
+ <div class="row"><button class="btn pink" onclick="S.posts=S.posts.filter(p=>p.id!==S.sel);S.sel=null;go(9)">Eliminar</button><button class="btn out" onclick="closeM()">Cancelar</button></div></div>`;
+M[18]=()=>`<div class="modal" style="text-align:left"><h3 style="margin-top:0;text-align:center">¿Qué negocio quieres eliminar?</h3>
+ ${myBiz().map(b=>`<div class="radio ${S.delBiz===b.id?'on':''}" onclick="S.delBiz=${b.id};render()"><span class="dot"></span><div class="avatar" style="width:30px;height:30px">${ICON_SHOP}</div><b>${b.nombre}</b></div>`).join('')}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn pink" ${S.delBiz?'':'disabled'} onclick="openM(19)">Continuar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+M[19]=()=>{const b=S.biz.find(x=>x.id===S.delBiz)||myBiz()[0];return `<div class="modal"><div class="mic" style="background:var(--c-rojo-claro);color:var(--c-rojo)">[[i:alerta]]</div><h3>¿Eliminar ${b.nombre}?</h3>
+ <p>Se borrarán el negocio y sus publicaciones. No se puede deshacer. Escribe la contraseña del negocio para confirmar.</p>
+ <input class="in" id="dp" type="password" placeholder="Contraseña del negocio" oninput="document.getElementById('dok').disabled=!this.value">${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn pink" id="dok" disabled onclick="delBiz()">Aceptar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`};
+function delBiz(){const b=S.biz.find(x=>x.id===S.delBiz);if(v('dp')!==b.pass){S.err='Contraseña incorrecta. Inténtalo de nuevo.';return render()}
+ S.biz=S.biz.filter(x=>x.id!==b.id);S.posts=S.posts.filter(p=>p.bizId!==b.id);S.delBiz=null;S.err='';S.modal=null;S.view=myBiz().length?7:5;S._noBiz=!myBiz().length;toast('Negocio eliminado.')}
+M[22]=()=>`<div class="modal"><div class="mic" style="background:var(--c-azul-claro)">${ICON_USER.replace('<svg','<svg width="28" height="28"')}</div><h3>Regístrate para calificar y comentar</h3><p>Necesitas una cuenta para dejar tu calificación y tu comentario.</p>
+ <div class="row"><button class="btn" onclick="S.back3=21;S.draft=null;go(3)">Registrarse</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+M[23]=()=>`<div class="modal"><div class="mic" style="background:var(--c-azul-claro)">[[i:salir]]</div><h3>¿Quieres salir del negocio?</h3><p>Sales del panel del negocio y vuelves a tu cuenta de usuario.</p>
+ <div class="row"><button class="btn green" onclick="S._noBiz=false;go(7)">Aceptar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+M[25]=()=>`<div class="modal"><h3 style="margin-top:0">Foto de perfil${S.photoFor==='biz'?' del negocio':''}</h3><div class="avatar" style="width:200px;height:200px;margin:var(--esp-4) auto">${curPhoto()?`<img src="${curPhoto()}">`:ICON_USER}</div>
+ <button class="btn out" style="width:100%" onclick="closeM()">Cerrar</button></div>`;
+M[26]=()=>`<div class="modal" style="width:460px"><h3 style="margin-top:0">Tomar foto</h3>
+ <div class="cam">${S.camShot?`<div style="width:46%;aspect-ratio:1;border-radius:50%;background:var(--c-amarillo);display:grid;place-items:center">${ICON_USER.replace('<svg','<svg width="60%"')}</div>`:'<video id="vid" autoplay playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video><div class="guide" style="position:relative"></div>'}</div>
+ <div class="row" style="margin-top:var(--esp-4)">${S.camShot?`<button class="btn" onclick="usePhoto()">Usar foto</button><button class="btn out" onclick="S.camShot=false;render()">Repetir</button>`:`<button class="btn" onclick="shoot()">[[i:camara]] Tomar foto</button><button class="btn outpink" onclick="stopCam();closeM()">Cancelar</button>`}</div></div>`;
+let stream=null,shotData=null;
+function startCam(){const vd=document.getElementById('vid');if(!vd||!navigator.mediaDevices)return;
+ if(stream){vd.srcObject=stream;return}navigator.mediaDevices.getUserMedia({video:true}).then(s=>{stream=s;vd.srcObject=s}).catch(()=>{})}
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function shoot(){const vd=document.getElementById('vid');shotData=null;
+ if(vd&&vd.videoWidth){const c=document.createElement('canvas');const s=Math.min(vd.videoWidth,vd.videoHeight);c.width=c.height=s;c.getContext('2d').drawImage(vd,(vd.videoWidth-s)/2,(vd.videoHeight-s)/2,s,s,0,0,s,s);shotData=c.toDataURL('image/jpeg')}
+ S.camShot=true;render();if(shotData)document.querySelector('.cam').innerHTML=`<img src="${shotData}" style="width:100%;height:100%;object-fit:cover">`}
+function usePhoto(){stopCam();setPhoto(shotData);S.camShot=false}
+
+
+/* ======================= ADMINISTRADOR ======================= */
+const ATABS=[[29,'Publicaciones'],[30,'Negocios'],[31,'Usuarios'],[32,'Categorías'],[33,'Administradores'],[34,'Bitácora'],[44,'Reportes']];
+function topAdmin(tab){const N={29:S.posts.length,30:S.biz.length,31:S.roster.filter(r=>r.rol==='usuario').length,32:CATS.length,33:S.roster.filter(r=>r.rol!=='usuario').length,34:S.log.length};
+ return `<div class="top adm panel"><div style="display:flex;gap:var(--esp-3);align-items:center"><div class="logo">[[i:libreta]]</div><b style="font-size:var(--tam-cuerpo)">Modo administrador</b></div>
+ <div class="tabs sm">${ATABS.map(([n,t])=>`<button class="${n===tab?'on':''}" onclick="go(${n})">${t}${N[n]!==undefined?`<span class="n">${N[n]}</span>`:''}</button>`).join('')}</div>
+ <button class="btn sm" style="background:var(--c-blanco);color:var(--c-morado)" onclick="go(4)">[[i:salir]] Salir del panel</button></div>`}
+const crumb=(...p)=>`<div class="adm-crumb">${p.map(x=>x[1]?`<a onclick="go(${x[1]})">${x[0]}</a>`:`<b>${x[0]}</b>`).join('[[i:sig-chico]]')}</div>`;
+const filt=ph=>`<input class="adm-search" placeholder="${ph}" oninput="const q=this.value.toLowerCase();document.querySelectorAll('.arow.f').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none')">`;
+const head=(t,sub,right)=>`<div class="adm-head"><div><h2 class="t" style="margin:0">${t}</h2><p class="muted" style="margin:var(--esp-1) 0 0">${sub}</p></div>${right||''}</div>`;
+const vacio=t=>`<div class="vacio">[[i:bandeja]]<p>${t}</p></div>`;
+const adminName=()=>(S.roster.find(r=>r.mat===S.adminMat)||{nombre:'Administrador maestro'}).nombre;
+V[29]=()=>topAdmin(29)+`<div class="wrap">${head('Publicaciones','Todas las publicaciones del sistema.','')}${bizTools('Buscar publicación o negocio',true)}
+ <div class="adm-hint">[[i:idea]] Pulsa una publicación para ver su detalle, sus comentarios y darla de baja.</div>
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)">${S.posts.length?S.posts.map(p=>`<div class="arow click bf" ${postData(p)} onclick="S.sel=${p.id};S.img=0;S.backAdmin=29;go(38)"><div style="width:64px">${art(p.imgs[0])}</div><div style="flex:1"><b>${p.nombre}</b><div class="muted" style="font-size:var(--tam-apoyo)">${bizName(p.bizId)} · $${p.precio}</div></div>${tipoChip(p)}<span class="go">Ver detalle</span><span class="muted" style="font-size:var(--tam-seccion)">[[i:sig]]</span></div>`).join(''):vacio('No hay publicaciones.')}${bizEmpty('Ninguna publicación coincide con la búsqueda.')}</div></div>`;
+V[30]=()=>topAdmin(30)+`<div class="wrap">${head('Negocios','Todos los negocios registrados.','')}${bizTools('Buscar negocio')}
+ <div class="adm-hint">[[i:idea]] Pulsa un negocio para ver su perfil y darlo de baja.</div>
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)">${S.biz.length?S.biz.map(b=>`<div class="arow click bf" ${bizData(b)} onclick="S.adminBiz=${b.id};go(39)"><div class="avatar" style="width:44px;height:44px">${b.foto?`<img src="${b.foto}">`:ICON_SHOP}</div><div style="flex:1"><b>${b.nombre}</b><div class="muted" style="font-size:var(--tam-apoyo)">${b.tel}</div></div><span class="chip">[[i:etiqueta]] ${b.cat}</span><span class="muted" style="font-size:var(--tam-apoyo)">${S.posts.filter(p=>p.bizId===b.id).length} publ.</span><span class="go">Ver perfil</span><span class="muted" style="font-size:var(--tam-seccion)">[[i:sig]]</span></div>`).join(''):vacio('No hay negocios.')}${bizEmpty('Ningún negocio coincide con la búsqueda.')}</div></div>`;
+const rowMenu=(id,label,tipo)=>`<button class="btn out sm" style="padding:var(--esp-2) var(--esp-3)" title="Más acciones" onclick="event.stopPropagation();S.menu=S.menu==='r${id}'?null:'r${id}';render()">[[i:opciones]]</button>${S.menu==='r'+id?`<div class="menu" style="right:4px;top:54px"><button class="del" onclick="askBaja('${tipo}','${id}')">[[i:basura]] ${label}</button></div>`:''}`;
+V[31]=()=>{const us=S.roster.filter(r=>r.rol==='usuario');return topAdmin(31)+`<div class="wrap">${head('Usuarios','Cuentas de usuario registradas. Los administradores están en su propia pestaña.',filt('Buscar por nombre o matrícula'))}
+ <div class="adm-hint">[[i:idea]] Usa el botón [[i:opciones]] de cada fila para dar de baja una cuenta.</div>
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)">${us.length?us.map(u=>`<div class="arow f" style="position:relative"><div class="avatar" style="width:44px;height:44px">${ICON_USER}</div><div style="flex:1"><b>${u.nombre}</b><div class="muted" style="font-size:var(--tam-apoyo)">Matrícula ${u.mat}</div></div>${rowMenu(u.mat,'Eliminar usuario','usuario')}</div>`).join(''):vacio('No hay usuarios.')}</div></div>`};
+V[32]=()=>topAdmin(32)+`<div class="wrap">${head('Categorías','Hay '+CATS.length+' categorías disponibles para los negocios. Puedes agregar, editar o eliminar.','<button class="btn purple" onclick="openM(36)">[[i:mas]] Agregar categoría</button>')}
+ <div class="adm-hint">[[i:idea]] Al editar una categoría se actualiza en los negocios que la usan. Al eliminarla, esos negocios pasan a «Otro».</div>
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)">${CATS.map(c=>{const n=S.biz.filter(b=>b.cat===c).length;return `<div class="arow"><span style="font-size:var(--tam-subtitulo)">[[i:etiqueta]]</span><div style="flex:1"><b>${c}</b><div class="muted" style="font-size:var(--tam-apoyo)">${n} ${n===1?'negocio':'negocios'}</div></div>${c==='Otro'?'<span class="muted" style="font-size:var(--tam-apoyo)">[[i:candado]] Categoría base</span>':`<button class="btn out sm" onclick="S.catEdit='${c}';openM(40)">[[i:lapiz]] Editar</button><button class="btn outpink sm" onclick="askBaja('categoría','${c}')">[[i:basura]] Eliminar</button>`}</div>`}).join('')}</div></div>`;
+V[33]=()=>{const ad=S.roster.filter(r=>r.rol!=='usuario');return topAdmin(33)+`<div class="wrap">${head('Administradores','Cuentas con acceso a este panel.','<button class="btn purple" onclick="openM(37)">[[i:mas]] Agregar administrador</button>')}
+ <div class="adm-hint">[[i:idea]] El administrador maestro no se puede eliminar. Los hijos se dan de baja con el botón [[i:opciones]].</div>
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)">${ad.map(u=>`<div class="arow f" style="position:relative"><div class="avatar" style="width:44px;height:44px">${ICON_USER}</div><div style="flex:1"><b>${u.nombre}</b> <span class="tag ${u.rol==='hijo'?'h':''}">${u.rol==='maestro'?'Maestro':'Hijo'}</span><div class="muted" style="font-size:var(--tam-apoyo)">Matrícula ${u.mat}</div></div>${u.rol==='maestro'?'<span class="muted" style="font-size:var(--tam-apoyo)">[[i:candado]] Protegido</span>':rowMenu(u.mat,'Eliminar administrador','administrador')}</div>`).join('')}</div></div>`};
+V[34]=()=>topAdmin(34)+`<div class="wrap">${head('Bitácora de bajas','Registro de todo lo que se ha eliminado. No se puede editar ni borrar.',filt('Buscar en la bitácora'))}
+ <div class="card" style="padding:var(--esp-2) var(--esp-5)"><div class="arow muted" style="font-size:var(--tam-etiqueta);font-weight:var(--peso-fuerte);text-transform:uppercase"><div style="flex:2">Qué se eliminó</div><div style="flex:1">Administrador</div><div style="flex:1">Fecha</div></div>
+ ${S.log.length?S.log.slice().reverse().map(l=>`<div class="arow f"><div style="flex:2">${l.que}</div><div style="flex:1">${l.quien}</div><div style="flex:1" class="muted">${l.cuando}</div></div>`).join(''):vacio('Todavía no hay bajas registradas.')}</div></div>`;
+V[38]=()=>{const p=curPost();const bk=S.backAdmin||29;return `<div class="top adm"><button class="btn sm" style="background:var(--c-blanco);color:var(--c-morado)" onclick="go(${bk})">[[i:atras]] Volver</button><b>Modo administrador</b><button class="btn sm" style="background:var(--c-blanco);color:var(--c-morado)" onclick="go(4)">[[i:salir]] Salir del panel</button></div>
+ <div class="wrap">${bk===39?crumb(['Negocios',30],['Negocio',39],[p.nombre]):crumb(['Publicaciones',29],[p.nombre])}<div class="hoja" style="display:grid;--cols:1fr 1fr;gap:var(--esp-5)"><div>${gallery(p)}</div>
+ <div><h2 class="t" style="font-size:var(--tam-pantalla)">${p.nombre}</h2><div style="display:flex;align-items:center;gap:var(--esp-3)"><span class="precio">$${p.precio}</span>${tipoChip(p)}</div>
+  <div class="muted" style="font-size:var(--tam-apoyo);margin-top:var(--esp-1)">[[i:calendario]] Publicado el ${fecha(p.fecha)}</div><p class="muted">${p.desc}</p>
+  <div class="card" style="padding:var(--esp-3) var(--esp-4);margin-top:var(--esp-4)"><div class="info"><div class="ic">${ICON_SHOP}</div><div><div class="muted" style="font-size:var(--tam-etiqueta)">Vendido por</div><b>${bizName(p.bizId)}</b></div></div>
+  <div class="info" style="border-top:1px solid var(--c-linea)"><div class="ic">[[i:telefono]]</div><div><div class="muted" style="font-size:var(--tam-etiqueta)">Contacto del vendedor</div><a class="wa" href="https://wa.me/${bizTel(p.bizId).replace(/\D/g,'')}" target="_blank">${bizTel(p.bizId)}</a></div></div></div>
+  <div class="danger"><div><b>Zona de baja</b><div class="muted" style="font-size:var(--tam-apoyo)">Se borrarán también sus imágenes, calificaciones y comentarios.</div></div><button class="btn pink sm" onclick="askBaja('publicación',${p.id})">[[i:basura]] Eliminar publicación</button></div></div></div>
+ <div class="card" style="margin-top:var(--esp-5)"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Calificaciones y comentarios</h3><span><b style="font-size:var(--tam-seccion)">${avg(p).toFixed(1)}</b> ${stars(avg(p))} <span class="muted" style="font-size:var(--tam-etiqueta)">${Object.keys(p.ratings).length} calificaciones</span></span></div>
+ <div style="display:flex;justify-content:flex-end;margin-top:var(--esp-2)">${csel()}</div>${p.comments.length?csorted(p).map(c=>commentRow(p,c,false,true)).join(''):'<div class="vacio">[[i:mensaje]]<p>Esta publicación no tiene comentarios.</p></div>'}</div></div>`};
+V[39]=()=>{const b=S.biz.find(x=>x.id===S.adminBiz)||S.biz[0];if(!b)return topAdmin(30)+`<div class="wrap">${vacio('No hay negocios.')}</div>`;
+ const i=S.biz.indexOf(b);const ps=S.posts.filter(p=>p.bizId===b.id).sort((x,y)=>y.fecha-x.fecha);
+ const links=[];Object.entries(b.redes).forEach(([n,ls])=>ls.filter(x=>x).forEach(l=>links.push([n,l])));
+ return topAdmin(30)+`<div class="wrap">${crumb(['Negocios',30],[b.nombre])}
+ ${credencial(b,i,links)}
+ <div class="danger"><div><b>Zona de baja</b><div class="muted" style="font-size:var(--tam-apoyo)">Se borrarán también sus ${ps.length} publicaciones.</div></div><button class="btn pink sm" onclick="askBaja('negocio',${b.id})">[[i:basura]] Eliminar negocio</button></div>
+ <h3 style="margin:var(--esp-5) 0 var(--esp-3)">Publicaciones <span class="muted" style="font-size:var(--tam-apoyo)">(${ps.length})</span></h3>
+ ${ps.length?`<div class="grid3">${ps.map(p=>`<div class="pcard" onclick="S.sel=${p.id};S.img=0;S.backAdmin=39;go(38)">${art(p.imgs[0])}<div class="nm">${p.nombre}</div><div class="pr">$${p.precio}</div></div>`).join('')}</div>`:`<div class="vacio">[[i:bandeja]]<p>Este negocio todavía no tiene publicaciones.</p></div>`}</div>`};
+
+/* ======================= REPORTES ======================= */
+const kpis=(x)=>`<div class="kpis"><div class="kpi"><div class="n">${x.v}</div><div class="l">[[i:ver]] Vistas</div></div><div class="kpi"><div class="n">${x.w}</div><div class="l">[[i:telefono]] Clics en WhatsApp</div></div><div class="kpi"><div class="n">${x.r?x.r.toFixed(1):'—'}</div><div class="l">[[i:estrella]] Calificación promedio</div></div><div class="kpi"><div class="n">${x.cm}</div><div class="l">[[i:mensaje]] Comentarios nuevos</div></div></div>`;
+const monthSel=()=>`<div class="csort">Mes <select class="adm-search" style="min-width:170px" onchange="S.repMonth=this.value;render()">${lastMonths().map(m=>`<option value="${m}" ${m===repMonth()?'selected':''}>${monthLabel(m)}</option>`).join('')}</select></div>`;
+const repTabs=t=>`<div class="tabs sm" style="width:max-content;margin-bottom:var(--esp-4)"><button class="${t===41?'on':''}" onclick="go(41)">General</button><button class="${t===42?'on':''}" onclick="go(42)">Por publicación</button></div>`;
+const repHead=(t,sub)=>`<div class="adm-head"><div><h2 class="t" style="margin:0">Reportes</h2><p class="muted" style="margin:var(--esp-1) 0 0">${sub}</p></div>${monthSel()}</div>`;
+const bizPosts=()=>S.posts.filter(p=>p.bizId===S.bizIdx);
+const repTable=(ps,mk,from,showBiz)=>`<div class="tabla-scroll"><table class="rtable"><tr><th>Publicación</th>${showBiz?'<th style="text-align:left">Negocio</th>':''}<th>Vistas</th><th>Clics WhatsApp</th><th>Calificación</th><th>Comentarios</th></tr>${ps.map(p=>{const x=pStats(p,mk);return `<tr class="click" onclick="S.repPost=${p.id};S.repFrom='${from}';go(43)"><td><div style="display:flex;align-items:center;gap:var(--esp-3)"><div style="width:48px">${art(p.imgs[0])}</div><div><b>${p.nombre}</b><div class="muted" style="font-size:var(--tam-etiqueta)">${p.tipo||'Producto'}</div></div></div></td>${showBiz?`<td style="text-align:left">${bizName(p.bizId)}</td>`:''}<td>${x.v}</td><td>${x.w}</td><td>${x.r?x.r.toFixed(1)+' [[i:estrella]]':'—'}</td><td>${x.cm}</td></tr>`}).join('')}</table></div>`;
+const topBars=(ps,mk)=>{const a=ps.map(p=>({p,w:pStats(p,mk).w})).sort((x,y)=>y.w-x.w).slice(0,5),mx=Math.max(1,...a.map(x=>x.w));return a.map(x=>`<div class="hbar"><div class="nm">${x.p.nombre}</div><div class="tr"><div class="fl" style="width:${Math.round(x.w/mx*100)}%"></div></div><div class="vl">${x.w}</div></div>`).join('')};
+V[41]=()=>{const ps=bizPosts(),mk=repMonth();return topBiz(41)+`<div class="wrap">${repHead(41,'Cómo les fue a las publicaciones de tu negocio en el mes elegido.')}${repTabs(41)}
+ ${ps.length?`${kpis(tStats(ps,mk))}<div class="card"><h3 style="margin:0 0 var(--esp-1)">Publicaciones con más clics en WhatsApp</h3><p class="muted" style="margin:0 0 var(--esp-2);font-size:var(--tam-apoyo)">Las 5 con más contactos en ${monthLabel(mk).toLowerCase()}.</p>${topBars(ps,mk)}</div>`
+ :`<div class="vacio">[[i:bandeja]]<p>Todavía no tienes publicaciones. Cuando las tengas, aquí verás sus resultados.</p></div>`}</div>`};
+V[42]=()=>{const ps=bizPosts(),mk=repMonth();return topBiz(42)+`<div class="wrap">${repHead(42,'Resultados de cada publicación en el mes elegido. Pulsa una para ver su detalle.')}${repTabs(42)}
+ ${ps.length?`<div class="card" style="padding:var(--esp-2) var(--esp-4)">${repTable(ps,mk,'biz',false)}</div>`:`<div class="vacio">[[i:bandeja]]<p>Todavía no tienes publicaciones.</p></div>`}</div>`};
+V[43]=()=>{const p=S.posts.find(x=>x.id===S.repPost)||S.posts[0],mk=repMonth(),x=pStats(p,mk),adm=S.repFrom==='admin';
+ const [y,m]=mk.split('-').map(Number),nd=new Date(y,m,0).getDate(),dias=[];for(let d=1;d<=nd;d++){let v=0,w=0;(p.ev||[]).forEach(e=>{if(monthKey(e.f)===mk&&e.f.getDate()===d){v+=e.v;w+=e.w}});dias.push({d,v,w})}
+ const mx=Math.max(1,...dias.map(a=>a.v));
+ return (adm?topAdmin(44):topBiz(42))+`<div class="wrap"><div style="display:flex;gap:var(--esp-4);align-items:center;margin-bottom:var(--esp-3)"><button class="btn out sm" onclick="go(${adm?44:42})">[[i:atras]] Volver a ${adm?'los reportes':'mis publicaciones'}</button>${adm?crumb(['Reportes',44],[p.nombre]):crumb(['Reportes',41],['Por publicación',42],[p.nombre])}</div>
+ <div class="adm-head"><div style="display:flex;align-items:center;gap:var(--esp-4)"><div style="width:72px">${art(p.imgs[0])}</div><div><h2 class="t" style="margin:0">${p.nombre}</h2><div class="muted" style="font-size:var(--tam-apoyo)">${bizName(p.bizId)} · ${tipoChip(p)} · Publicada el ${fecha(p.fecha)}</div></div></div>${monthSel()}</div>
+ ${kpis(x)}<div class="card"><h3 style="margin:0 0 var(--esp-3)">Actividad de cada día en ${monthLabel(mk).toLowerCase()}</h3>
+  <div class="dbars">${dias.map(a=>`<div class="d" title="Día ${a.d}: ${a.v} vistas, ${a.w} clics"><i style="height:${Math.round(a.v/mx*100)}%;background:var(--c-azul)"></i><i style="height:${Math.round(a.w/mx*100)}%;background:var(--c-verde)"></i></div>`).join('')}</div>
+  <div style="display:flex;justify-content:space-between;font-size:var(--tam-etiqueta);color:var(--c-suave);margin-top:var(--esp-1)"><span>Día 1</span><span>Día ${nd}</span></div>
+  <div class="legend"><span><b style="background:var(--c-azul)"></b>Vistas</span><span><b style="background:var(--c-verde)"></b>Clics en WhatsApp</span></div></div></div>`};
+V[44]=()=>{const mk=repMonth(),f=S.repBiz||'',ps=S.posts.filter(p=>!f||String(p.bizId)===f);return topAdmin(44)+`<div class="wrap">
+ <div class="adm-head"><div><h2 class="t" style="margin:0">Reportes</h2><p class="muted" style="margin:var(--esp-1) 0 0">Resultados de las publicaciones de todo el sistema en el mes elegido.</p></div>
+  <div style="display:flex;gap:var(--esp-4);align-items:center;flex-wrap:wrap"><div class="csort">Negocio <select class="adm-search" style="min-width:190px" onchange="S.repBiz=this.value;render()"><option value="">Todos los negocios</option>${S.biz.map(b=>`<option value="${b.id}" ${String(b.id)===f?'selected':''}>${b.nombre}</option>`).join('')}</select></div>${monthSel()}</div></div>
+ <div class="adm-hint">[[i:idea]] Pulsa una publicación para ver su reporte detallado.</div>
+ ${ps.length?`${kpis(tStats(ps,mk))}<div class="card" style="margin-bottom:var(--esp-4)"><h3 style="margin:0 0 var(--esp-1)">Publicaciones con más clics en WhatsApp</h3>${topBars(ps,mk)}</div><div class="card" style="padding:var(--esp-2) var(--esp-4)">${repTable(ps,mk,'admin',true)}</div>`:`<div class="vacio">[[i:bandeja]]<p>Este negocio no tiene publicaciones.</p></div>`}</div>`};
+function askBaja(tipo,id){S.baja={tipo,id};openM(35)}
+function bajaInfo(){const b=S.baja;
+ if(b.tipo==='publicación'){const p=S.posts.find(x=>x.id===b.id)||{nombre:'—'};return {det:'esta',tipo:'publicación',nombre:p.nombre,dep:'Se borrarán también sus imágenes, calificaciones y comentarios.'}}
+ if(b.tipo==='comentario'){const c=curPost().comments.find(x=>x.id===b.id)||{who:'—',txt:''};return {det:'este',tipo:'comentario',nombre:'«'+c.txt+'», de '+(c.who==='me'?'un usuario':c.who),dep:''}}
+ if(b.tipo==='categoría'){const k=S.biz.filter(x=>x.cat===b.id).length;return {det:'esta',tipo:'categoría',nombre:b.id,dep:k?`${k} ${k===1?'negocio pasará':'negocios pasarán'} a la categoría «Otro».`:'Ningún negocio la usa.'}}
+ if(b.tipo==='negocio'){const n=S.biz.find(x=>x.id===b.id)||{nombre:'—'};return {det:'este',tipo:'negocio',nombre:n.nombre,dep:'Se borrarán también sus publicaciones.'}}
+ if(b.tipo==='usuario'){const u=S.roster.find(x=>x.mat===b.id)||{nombre:'—'};return {det:'este',tipo:'usuario',nombre:u.nombre,dep:'Se borrarán también sus negocios, calificaciones y comentarios.'}}
+ const u=S.roster.find(x=>x.mat===b.id)||{nombre:'—'};return {det:'este',tipo:'administrador',nombre:u.nombre,dep:'Perderá su cuenta y su acceso al panel.'}}
+M[35]=()=>{const i=bajaInfo();return `<div class="modal"><div class="mic" style="background:var(--c-rojo-claro);color:var(--c-rojo)">[[i:alerta]]</div><h3>¿Dar de baja ${i.det} ${i.tipo}?</h3>
+ <p><b>${i.nombre}</b><br>${i.dep} Esta acción es permanente y no se puede deshacer. Quedará registrada en la bitácora.</p>
+ <div class="row"><button class="btn pink" onclick="doBaja()">Eliminar</button><button class="btn out" onclick="closeM()">Cancelar</button></div></div>`};
+function doBaja(){const b=S.baja;let que='',next=S.view;
+ if(b.tipo==='publicación'){const p=S.posts.find(x=>x.id===b.id);que='Publicación «'+p.nombre+'» de «'+bizName(p.bizId)+'»';S.posts=S.posts.filter(x=>x.id!==b.id);S.sel=null;next=29}
+ else if(b.tipo==='comentario'){const p=curPost(),c=p.comments.find(x=>x.id===b.id);que='Comentario de «'+(c.who==='me'?'un usuario':c.who)+'» en «'+p.nombre+'»';p.comments=p.comments.filter(x=>x.id!==b.id)}
+ else if(b.tipo==='categoría'){que='Categoría «'+b.id+'»';CATS.splice(CATS.indexOf(b.id),1);S.biz.forEach(x=>{if(x.cat===b.id)x.cat='Otro'});next=32}
+ else if(b.tipo==='negocio'){const n=S.biz.find(x=>x.id===b.id);que='Negocio «'+n.nombre+'»';S.biz=S.biz.filter(x=>x.id!==b.id);S.posts=S.posts.filter(x=>x.bizId!==b.id);S._noBiz=!myBiz().length;next=30}
+ else{const u=S.roster.find(x=>x.mat===b.id);que=(b.tipo==='usuario'?'Usuario «':'Administrador «')+u.nombre+'» (matrícula '+u.mat+')';S.roster=S.roster.filter(x=>x.mat!==b.id);S.users=S.users.filter(x=>x.mat!==b.id);next=b.tipo==='usuario'?31:33}
+ S.log.push({que,quien:adminName(),cuando:fecha(new Date())});S.baja=null;S.modal=null;S.view=next;toast('Baja registrada en la bitácora.')}
+M[36]=()=>`<div class="modal" style="text-align:left"><h3 style="margin-top:0;text-align:center">Agregar categoría</h3><p style="text-align:center">Aparecerá en la lista de categorías al crear o modificar un negocio.</p>${fld('Nombre de la categoría','nc','','Ej. Mascotas')}${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="addCat()">Aceptar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+function addCat(){const n=v('nc');if(!n){S.err='Escribe el nombre de la categoría.';return render()}
+ if(CATS.some(c=>c.toLowerCase()===n.toLowerCase())){S.err='Esa categoría ya existe.';return render()}
+ CATS.splice(CATS.length-1,0,n);S.err='';S.modal=null;toast('Categoría agregada.')}
+M[40]=()=>`<div class="modal" style="text-align:left"><h3 style="margin-top:0;text-align:center">Editar categoría</h3><p style="text-align:center">El nuevo nombre se aplicará también a los negocios que ya usan esta categoría.</p>${fld('Nombre de la categoría','ec',S.catEdit,'Ej. Mascotas')}${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="editCat()">Guardar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+function editCat(){const n=v('ec'),o=S.catEdit;if(!n){S.err='Escribe el nombre de la categoría.';return render()}
+ if(CATS.some(c=>c!==o&&c.toLowerCase()===n.toLowerCase())){S.err='Esa categoría ya existe.';return render()}
+ CATS[CATS.indexOf(o)]=n;S.biz.forEach(x=>{if(x.cat===o)x.cat=n});S.err='';S.modal=null;toast('Categoría actualizada.')}
+M[37]=()=>`<div class="modal" style="text-align:left"><h3 style="margin-top:0;text-align:center">Agregar administrador</h3><p style="text-align:center">Escribe la matrícula de un usuario ya registrado. Recibirá el rol de administrador hijo.</p>${fld('Matrícula del usuario','am','','00000000')}${err()}
+ <div class="row" style="margin-top:var(--esp-4)"><button class="btn green" onclick="addAdmin()">Aceptar</button><button class="btn outpink" onclick="closeM()">Cancelar</button></div></div>`;
+function addAdmin(){const m=v('am');if(!m){S.err='Escribe la matrícula del usuario.';return render()}
+ const r=S.roster.find(x=>x.mat===m);if(!r){S.err='No existe un usuario con esa matrícula.';return render()}
+ if(r.rol!=='usuario'){S.err='Esa cuenta ya es administrador.';return render()}
+ r.rol='hijo';S.err='';S.modal=null;toast(r.nombre+' ahora es administrador.')}
+
+/* ======================= RENDER ======================= */
+function render(){
+  if(S._noBiz&&S.view===7)S.view=5;
+  const n=S.modal||S.view;
+  let h=`<div id="tag">(${n}) ${NAMES[n]}</div>`+V[S.view]();
+  if(S.modal)h+=`<div class="ov" onclick="if(event.target===this)closeM()">${M[S.modal]()}</div>`;
+  if(S.toast)h+=`<div class="toast" role="status">[[i:listo]]${S.toast}</div>`;
+  if(S.loading)h+=`<div class="cargando" role="status"><div>[[i:cargando]]<span>Cargando…</span></div></div>`;
+  document.getElementById('screen').innerHTML=iconos(h);
+  hacerEnfocables();
+  if(S.modal===26&&!S.camShot)startCam(); else if(S.modal!==26) stopCam();
+  side();
+  bizApply();
+}
+function hacerEnfocables(){document.querySelectorAll('#screen [onclick]').forEach(el=>{const t=el.tagName;if(['BUTTON','INPUT','SELECT','TEXTAREA','LABEL'].includes(t)||(t==='A'&&el.hasAttribute('href'))||el.classList.contains('ov'))return;el.tabIndex=0;if(!el.getAttribute('role'))el.setAttribute('role','button')})}
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[role="button"][tabindex]')){e.preventDefault();e.target.click()}if(e.key==='Escape'&&S.modal){closeM()}});
+document.addEventListener('click',e=>{if(S.menu&&!e.target.closest('.menu')&&!e.target.closest('.avatar')&&!e.target.closest('.btn.out.sm')){S.menu=null;render()}});
+render();
+</script>
+</body>
+</html>
