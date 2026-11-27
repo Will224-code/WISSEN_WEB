@@ -1,6 +1,6 @@
 # 05 · Reglas de CSS
 
-**Estado:** Entregado · **Se basa en:** [04-bases-del-diseno.md](04-bases-del-diseno.md) y el [boceto refinado](boceto-refinado/index.html)
+**Estado:** Entregado · **Se basa en:** [03-bases-del-diseno.md](03-bases-del-diseno.md) y el [boceto refinado](boceto-refinado/boceto-refinado.html)
 **Para:** quien programe los estilos en React (carpeta `src/styles/` del [ADR-002](../03-arquitectura/decisiones/ADR-002-organizacion-del-frontend.md))
 
 Este documento describe cómo quedó el boceto refinado y cómo se divide su estilo en piezas. La regla central: **una pieza que se repite es una sola pieza**, con un solo archivo de estilo, aunque aparezca en muchas pantallas. Por ejemplo, la ficha de publicación aparece en el catálogo, el panel del negocio, el perfil público del negocio y el perfil del negocio del administrador, y es **un solo** `tarjeta-publicacion.css`.
@@ -21,7 +21,7 @@ Este documento describe cómo quedó el boceto refinado y cómo se divide su est
 
 ## 2. Colores, tipografía, tamaños, espacios y formas
 
-Son los de las [bases del diseño](04-bases-del-diseno.md), sin cambios al refinar. Así quedan en `00-variables.css`:
+Son los de las [bases del diseño](03-bases-del-diseno.md), sin cambios al refinar. Así quedan en `00-variables.css`:
 
 | Grupo | Variables |
 |---|---|

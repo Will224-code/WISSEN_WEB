@@ -1,7 +1,7 @@
 # 00 · Documento de desarrollo
 
 **Estado:** Entregado · **Para:** el equipo de React
-**Fuentes:** [boceto refinado](../05-vista/boceto-refinado/index.html) (44 pantallas), [alcance](../01-producto/03-alcance.md), [usuarios](../01-producto/04-usuarios.md), [ADR-002](../03-arquitectura/decisiones/ADR-002-organizacion-del-frontend.md) a [ADR-007](../03-arquitectura/decisiones/ADR-007-despliegue-y-entornos.md), [bases del diseño](../05-vista/04-bases-del-diseno.md) y [reglas de CSS](../05-vista/05-reglas-css.md)
+**Fuentes:** [boceto refinado](../05-vista/boceto-refinado/boceto-refinado.html) (44 pantallas), [alcance](../01-producto/03-alcance.md), [usuarios](../01-producto/04-usuarios.md), [ADR-002](../03-arquitectura/decisiones/ADR-002-organizacion-del-frontend.md) a [ADR-007](../03-arquitectura/decisiones/ADR-007-despliegue-y-entornos.md), [bases del diseño](../05-vista/03-bases-del-diseno.md) y [reglas de CSS](../05-vista/04-reglas-css.md)
 
 Este documento es la **lista de trabajo**: qué páginas hay que crear, cuáles pantallas del boceto se unen en una sola página, qué piezas se reutilizan y qué mensajes existen. Si el boceto y el alcance o usuarios no coinciden, **prevalecen alcance y usuarios** (ver sección 9).
 
@@ -204,7 +204,7 @@ Además hay dos textos de dato vacío dentro de la credencial (no son estados va
 
 ## 7. Piezas y reciclaje
 
-Responde «qué se modulariza». Los nombres coinciden con el catálogo de [05-reglas-css.md](../05-vista/05-reglas-css.md) (archivo `kebab-case`, componente `PascalCase`).
+Responde «qué se modulariza». Los nombres coinciden con el catálogo de [04-reglas-css.md](../05-vista/04-reglas-css.md) (archivo `kebab-case`, componente `PascalCase`).
 
 ### 7.1 Piezas que se reutilizan (42)
 
@@ -272,7 +272,7 @@ Según las capas del [ADR-002](../03-arquitectura/decisiones/ADR-002-organizacio
 | `src/context/` | `AuthContext` | Usuario, rol, y qué negocio tiene abierto (ver decisión 1 de la sección 9) |
 | `src/routes/` | Rutas y `RutaProtegida` | Rutas de la sección 3 y cuatro niveles de acceso: visitante, usuario, vendedor con negocio abierto, administrador |
 | `src/lib/` | Configuración | Cliente de Supabase y `mensajes.js` con los códigos de la sección 6 |
-| `src/styles/` | Estilos | `00-variables.css`, `01-base.css`, `02-estructura.css`, `piezas/`, `paginas/` (ver [05-reglas-css.md](../05-vista/05-reglas-css.md)) |
+| `src/styles/` | Estilos | `00-variables.css`, `01-base.css`, `02-estructura.css`, `piezas/`, `paginas/` (ver [04-reglas-css.md](../05-vista/04-reglas-css.md)) |
 | `public/` | Fuentes e íconos estáticos | Si no se cargan de Google Fonts; los íconos vienen de `lucide-react` |
 
 ---

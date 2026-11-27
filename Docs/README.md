@@ -14,9 +14,11 @@ Página web de publicaciones de ventas para estudiantes emprendedores de la UMT.
 | [01-guia-de-diagramas-e-imagenes.md](04-analisis%20de%20base%20de%20datos/incicaciones/01-guia-de-diagramas-e-imagenes.md) | Cómo entregar el diagrama general y una imagen por tabla con su justificación |
 | [02-relaciones-entre-tablas.md](04-analisis%20de%20base%20de%20datos/incicaciones/02-relaciones-entre-tablas.md) | Relaciones entre las tablas, su porqué y qué pasa al eliminar |
 | [05-vista](05-vista/) | Cómo se ve y se recorre la aplicación: componentes de las pantallas, secuencias de navegación (Word) y el boceto navegable |
-| [02-boceto.html](05-vista/02-boceto.html) | Maqueta visual navegable (solo para validar pantallas y flujos; la aplicación real se hace en React) |
-| [03-instrucciones-refinar-vista.md](05-vista/03-instrucciones-refinar-vista.md) | Instrucciones para el compañero de la vista, en este orden: bases del diseño (`04-bases-del-diseno.md`), boceto refinado, reglas de CSS (`05-reglas-css.md`) y documento de desarrollo. Todo **pendiente de entregar**; es solo diseño y documentos, sin código |
-| 06-desarrollo | Documento de desarrollo (`00-documento-de-desarrollo.md`, **pendiente de entregar**): páginas, cuáles se modularizan, alertas, ventanas y componentes |
+| [02-boceto-no-refinado.html](05-vista/02-boceto-no-refinado.html) | Primer boceto navegable (versión anterior; se conserva solo como referencia) |
+| [03-bases-del-diseno.md](05-vista/03-bases-del-diseno.md) | Bases del diseño «Cuaderno»: colores, tipografía, espacios, formas, íconos, estados, responsivo y accesibilidad |
+| [04-reglas-css.md](05-vista/04-reglas-css.md) | Reglas de CSS: catálogo de piezas, nombres, archivos de estilo y modularidad |
+| [boceto-refinado](05-vista/boceto-refinado/boceto-refinado.html) | Boceto refinado navegable (44 pantallas). Es el que sigue el equipo de React; la aplicación real se hace en React |
+| [06-desarrollo](06-desarrollo/00-documento-de-desarrollo.md) | Documento de desarrollo: páginas, piezas que se reutilizan, ventanas, alertas y decisiones sobre los pendientes |
 
 ## Orden de lectura recomendado
 

@@ -42,7 +42,7 @@ Roles: Visitante, Usuario registrado (Cliente), Vendedor y Administrador
 - Formularios con controles variados: texto, contraseña, radiobotones
   (tipo producto/servicio), listas desplegables (categoría) y áreas de texto
 - Hojas de estilo CSS y archivos JavaScript organizados por componentes
-- El [prototipo](../05-vista/02-boceto.html) es solo una maqueta visual (HTML sin servidor) para validar pantallas y flujos. La aplicación real se construye en React y debe cumplir lo que dicen estos documentos aunque la maqueta no lo muestre.
+- El [prototipo](../05-vista/boceto-refinado/boceto-refinado.html) es solo una maqueta visual (HTML sin servidor) para validar pantallas y flujos. La aplicación real se construye en React y debe cumplir lo que dicen estos documentos aunque la maqueta no lo muestre.
 - Controles que la aplicación debe incluir (confirmados):
   - Radiobotones «Producto / Servicio» en Agregar y Modificar publicación (pantallas 10 y 15); obligatorio, con «Producto» marcado por defecto
   - Buscador y filtros (categoría y tipo) en el catálogo y el listado de negocios; en el panel del administrador, buscador en todas las listas

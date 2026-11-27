@@ -1,6 +1,6 @@
 # 04 · Bases del diseño
 
-**Estado:** Entregado · **Aplica a:** las 44 pantallas del [boceto refinado](boceto-refinado/index.html) y a la aplicación en React
+**Estado:** Entregado · **Aplica a:** las 44 pantallas del [boceto refinado](boceto-refinado/boceto-refinado.html) y a la aplicación en React
 **Identidad:** diseño «Cuaderno», que eligió el equipo el 25 de noviembre de 2026 entre tres propuestas. Reemplaza los colores y la fuente Figtree del primer boceto; los documentos [00-Componentes de pantallas](00-Componentes-de-pantallas.docx) y [01-Secuencias y navegación](01-Secuencias-y-navegacion.docx) ya usan este diseño.
 
 Este documento fija **todas** las decisiones visuales. Si un valor no está aquí, no se usa. Los nombres entre comillas invertidas (por ejemplo `--c-azul`) son los nombres de las variables que ya usa el boceto refinado y que usará el CSS de React.

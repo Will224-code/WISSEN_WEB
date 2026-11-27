@@ -6,7 +6,7 @@
 
 ## Contexto
 
-El frontend es una SPA con React (ADR-001). Tiene 8 vistas principales (más ventanas emergentes y pantallas secundarias, como los reportes; ver el [prototipo](../../05-vista/02-boceto.html)) y un modelo de datos pequeño (el detalle lo define el análisis de base de datos). El equipo es estudiantil y el principio rector es facilitar el desarrollo y evitar la complejidad.
+El frontend es una SPA con React (ADR-001). Tiene 8 vistas principales (más ventanas emergentes y pantallas secundarias, como los reportes; ver el [prototipo](../../05-vista/boceto-refinado/boceto-refinado.html)) y un modelo de datos pequeño (el detalle lo define el análisis de base de datos). El equipo es estudiantil y el principio rector es facilitar el desarrollo y evitar la complejidad.
 
 Hay que decidir cómo ordenar el código dentro de `src/`.
 

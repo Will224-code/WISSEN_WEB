@@ -1,6 +1,6 @@
 # 04 · Usuarios
 
-Este documento describe los tipos de usuario del sistema, qué puede hacer cada uno y las reglas que se aplican a sus permisos. Tomó como base el [prototipo](../05-vista/02-boceto.html), que se está actualizando; si hay diferencias, **este documento prevalece**.
+Este documento describe los tipos de usuario del sistema, qué puede hacer cada uno y las reglas que se aplican a sus permisos. Tomó como base el [prototipo](../05-vista/boceto-refinado/boceto-refinado.html), que se está actualizando; si hay diferencias, **este documento prevalece**.
 
 ## 1. Tipos de usuario
 
@@ -68,7 +68,7 @@ Es un Usuario registrado que ya creó al menos un negocio. No hay un cambio de c
 
 ## 6. Usuario registrado como administrador
 
-Es el responsable de mantener el control del sistema. Inicia sesión con su matrícula en la misma pantalla que todos y ve el **catálogo normal**, igual que cualquier usuario; no tiene un catálogo propio. Junto a «Mi perfil» aparece el botón **«Ver panel de administrador»**, que abre su **panel de administración** en pantalla completa, con siete secciones: Publicaciones, Negocios, Usuarios, Categorías, Administradores, Bitácora y Reportes (pantallas 29 a 44 del [prototipo](../05-vista/02-boceto.html)). Con **«Salir del panel»** regresa al catálogo. Las publicaciones y los negocios se dan de baja desde su detalle o perfil (con una «zona de baja»), no desde la lista, para evitar borrados por descuido; los comentarios, desde el detalle de la publicación.
+Es el responsable de mantener el control del sistema. Inicia sesión con su matrícula en la misma pantalla que todos y ve el **catálogo normal**, igual que cualquier usuario; no tiene un catálogo propio. Junto a «Mi perfil» aparece el botón **«Ver panel de administrador»**, que abre su **panel de administración** en pantalla completa, con siete secciones: Publicaciones, Negocios, Usuarios, Categorías, Administradores, Bitácora y Reportes (pantallas 29 a 44 del [prototipo](../05-vista/boceto-refinado/boceto-refinado.html)). Con **«Salir del panel»** regresa al catálogo. Las publicaciones y los negocios se dan de baja desde su detalle o perfil (con una «zona de baja»), no desde la lista, para evitar borrados por descuido; los comentarios, desde el detalle de la publicación.
 
 **Puede**
 - Todo lo que hacen los demás usuarios.
